@@ -13,7 +13,7 @@ export const heroContent = {
   description:
     "وب‌سایت‌ها، پنل‌های مدیریتی و اپلیکیشن‌های تحت وب را با تمرکز بر عملکرد، مقیاس‌پذیری و تجربه کاربری توسعه می‌دهم تا کسب‌وکارها سریع‌تر رشد کنند.",
   resumeHref: "/files/resume.pdf",
-  projectsHref: "/projects",
+  projectsHref: "#projects",
 } as const satisfies HeroContent;
 
 export const heroTechnologyLabels = {
@@ -32,6 +32,8 @@ export const heroProjects = [
     name: "FixBoo",
     imageSrc: "/images/projects/fixboo/hero.png",
     imageAlt: "نمای پروژه FixBoo",
+    imageWidth: 1402,
+    imageHeight: 1122,
     ariaLabel: "پروژه ۱ از ۴: FixBoo",
     browserTone: "default",
     technologies: [
@@ -47,6 +49,8 @@ export const heroProjects = [
     name: "PixShow",
     imageSrc: "/images/projects/pixshow/hero.png",
     imageAlt: "نمای پروژه PixShow",
+    imageWidth: 1448,
+    imageHeight: 1086,
     ariaLabel: "پروژه ۲ از ۴: PixShow",
     browserTone: "violet",
     technologies: [
@@ -62,6 +66,8 @@ export const heroProjects = [
     name: "Nirvana",
     imageSrc: "/images/projects/nirvana/hero.png",
     imageAlt: "نمای پروژه Nirvana",
+    imageWidth: 1402,
+    imageHeight: 1122,
     ariaLabel: "پروژه ۳ از ۴: Nirvana",
     browserTone: "teal",
     technologies: [
@@ -77,6 +83,8 @@ export const heroProjects = [
     name: "AmadayGasht",
     imageSrc: "/images/projects/amaday-gasht/hero.png",
     imageAlt: "نمای پروژه AmadayGasht",
+    imageWidth: 1448,
+    imageHeight: 1086,
     ariaLabel: "پروژه ۴ از ۴: AmadayGasht",
     browserTone: "amber",
     technologies: [

@@ -33,6 +33,8 @@ export type HeroProject = Readonly<{
   name: string;
   imageSrc: `/${string}`;
   imageAlt: string;
+  imageWidth: number;
+  imageHeight: number;
   ariaLabel: string;
   browserTone: HeroBrowserTone;
   technologies: readonly HeroTechnologyId[];
