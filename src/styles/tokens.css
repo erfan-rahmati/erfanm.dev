@@ -1,0 +1,74 @@
+:root {
+  /* Colors inherited from the legacy visual identity */
+  --color-bg: #08090d;
+  --color-header-bg-scrolled: rgba(14, 17, 23, 0.82);
+
+  --color-text-primary: #ffffff;
+  --color-text-secondary: rgba(255, 255, 255, 0.72);
+  --color-text-tertiary: rgba(255, 255, 255, 0.5);
+
+  --color-accent: #3e63ff;
+  --color-accent-strong: #2f4fe0;
+  --color-accent-soft: rgba(62, 99, 255, 0.35);
+  --color-on-accent: #06070a;
+
+  --color-accent-secondary: #8b7bff;
+  --color-accent-secondary-soft: rgba(139, 123, 255, 0.28);
+
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-surface: rgba(255, 255, 255, 0.05);
+  --color-surface-strong: rgba(255, 255, 255, 0.08);
+  --color-surface-border: rgba(255, 255, 255, 0.1);
+
+  /* Typography */
+  --font-base:
+    "Vazirmatn Variable",
+    "Vazirmatn",
+    "Tahoma",
+    sans-serif;
+
+  --font-code:
+    "JetBrains Mono Variable",
+    "JetBrains Mono",
+    "Consolas",
+    monospace;
+
+  /* Layout */
+  --header-height-desktop: 84px;
+  --header-height-tablet: 76px;
+  --header-height-mobile: 64px;
+
+  --container-max: 1360px;
+  --container-padding: 32px;
+
+  /* Motion */
+  --ease-smooth: cubic-bezier(0.65, 0, 0.35, 1);
+  --transition-fast: 0.2s ease;
+  --transition-medium: 0.4s var(--ease-smooth);
+  --transition-slow: 0.7s var(--ease-smooth);
+
+  /* Radius */
+  --radius-lg: 26px;
+  --radius-md: 16px;
+  --radius-sm: 10px;
+  --radius-pill: 999px;
+
+  /* Layers */
+  --z-base: 0;
+  --z-content: 10;
+  --z-header: 1000;
+  --z-dialog: 1100;
+  --z-toast: 1200;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --container-padding: 20px;
+  }
+}
+
+@media (max-width: 450px) {
+  :root {
+    --container-padding: 16px;
+  }
+}
