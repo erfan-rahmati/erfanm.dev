@@ -236,6 +236,7 @@ export function Hero() {
                   width={640}
                   height={800}
                   sizes="(max-width: 380px) 220px, (max-width: 450px) 260px, (max-width: 768px) 320px, (max-width: 1024px) 460px, 600px"
+                  loading="eager"
                   onError={() => {
                     setHasProfileImageError(true);
                   }}

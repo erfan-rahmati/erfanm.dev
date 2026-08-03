@@ -1,15 +1,25 @@
-export const GALLERY_DIRECTIONS = ["left", "right"] as const;
+import type { GalleryImageSource } from "./gallery.assets";
 
-export type GalleryDirection = (typeof GALLERY_DIRECTIONS)[number];
+export const GALLERY_DIRECTIONS = [
+  "left",
+  "right",
+] as const;
 
-export const GALLERY_ITEM_VARIANTS = ["desktop", "mobile"] as const;
+export type GalleryDirection =
+  (typeof GALLERY_DIRECTIONS)[number];
 
-export type GalleryItemVariant = (typeof GALLERY_ITEM_VARIANTS)[number];
+export const GALLERY_ITEM_VARIANTS = [
+  "desktop",
+  "mobile",
+] as const;
+
+export type GalleryItemVariant =
+  (typeof GALLERY_ITEM_VARIANTS)[number];
 
 export type GalleryItem = Readonly<{
   id: string;
   projectName: string;
-  src: `/${string}`;
+  src: GalleryImageSource;
   alt: string;
   variant: GalleryItemVariant;
 }>;
