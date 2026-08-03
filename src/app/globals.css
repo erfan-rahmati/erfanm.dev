@@ -3,6 +3,7 @@
 @import "../components/layout/site-navigation/site-navigation.css";
 @import "../features/home/hero/hero.css";
 @import "../features/home/gallery/gallery.css";
+@import "../features/home/about/about.css";
 
 *,
 *::before,
