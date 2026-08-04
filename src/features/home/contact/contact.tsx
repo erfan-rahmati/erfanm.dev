@@ -1,12 +1,9 @@
 "use client";
 
-import {
-  type FormEvent,
-  useRef,
-  useState,
-} from "react";
+import { type FormEvent, useRef, useState } from "react";
 
 import { siteContact } from "@/config/site";
+import { submitCollaborationRequest } from "./contact.actions";
 
 import {
   collaborationDurationOptions,
@@ -33,18 +30,11 @@ import {
   sanitizePhoneInput,
 } from "./contact.utils";
 
-type CollaborationFormErrors =
-  Partial<
-    Record<
-      | keyof CollaborationRequestFormValues
-      | "form",
-      string
-    >
-  >;
+type CollaborationFormErrors = Partial<
+  Record<keyof CollaborationRequestFormValues | "form", string>
+>;
 
-type FormSubmissionState =
-  | "idle"
-  | "validated";
+type FormSubmissionState = "idle" | "submitting" | "success" | "error";
 
 const initialFormValues: CollaborationRequestFormValues = {
   fullName: "",
@@ -55,73 +45,81 @@ const initialFormValues: CollaborationRequestFormValues = {
   description: "",
 };
 
-function validateForm(
-  values: CollaborationRequestFormValues,
-) {
+function validateForm(values: CollaborationRequestFormValues) {
   const errors: CollaborationFormErrors = {};
 
-  const normalizedFullName =
-    values.fullName.trim();
+  const normalizedFullName = values.fullName.trim();
 
   if (!normalizedFullName) {
-    errors.fullName =
-      "نام و نام خانوادگی را وارد کن.";
-  }
-  else if (
-    normalizedFullName.split(/\s+/).length < 2
-  ) {
-    errors.fullName =
-      "نام و نام خانوادگی را کامل وارد کن.";
+    errors.fullName = "نام و نام خانوادگی را وارد کن.";
+  } else if (normalizedFullName.split(/\s+/).length < 2) {
+    errors.fullName = "نام و نام خانوادگی را کامل وارد کن.";
   }
 
   if (!values.phone.trim()) {
-    errors.phone =
-      "شماره تماس را وارد کن.";
-  }
-  else if (
-    !isValidIranianMobile(values.phone)
-  ) {
-    errors.phone =
-      "شماره موبایل معتبر وارد کن.";
+    errors.phone = "شماره تماس را وارد کن.";
+  } else if (!isValidIranianMobile(values.phone)) {
+    errors.phone = "شماره موبایل معتبر وارد کن.";
   }
 
   if (values.projectTypes.length === 0) {
-    errors.projectTypes =
-      "حداقل یک نوع پروژه را انتخاب کن.";
+    errors.projectTypes = "حداقل یک نوع پروژه را انتخاب کن.";
   }
 
   if (!values.proposedDuration) {
-    errors.proposedDuration =
-      "مدت‌زمان پیشنهادی را انتخاب کن.";
+    errors.proposedDuration = "مدت‌زمان پیشنهادی را انتخاب کن.";
   }
 
   return errors;
 }
 
+function mapServerFieldErrors(
+  fieldErrors: Record<string, string[]> | undefined,
+) {
+  const mappedErrors: CollaborationFormErrors = {};
+
+  if (!fieldErrors) {
+    return mappedErrors;
+  }
+
+  const supportedFields: readonly (keyof CollaborationRequestFormValues)[] = [
+    "fullName",
+    "phone",
+    "projectTypes",
+    "proposedDuration",
+    "proposedBudgetToman",
+    "description",
+  ];
+
+  for (const fieldName of supportedFields) {
+    const firstMessage = fieldErrors[fieldName]?.[0];
+
+    if (firstMessage) {
+      mappedErrors[fieldName] = firstMessage;
+    }
+  }
+
+  return mappedErrors;
+}
+
 export function Contact() {
-  const formRef =
-    useRef<HTMLFormElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
-  const [
-    values,
-    setValues,
-  ] = useState<CollaborationRequestFormValues>(
-    initialFormValues,
-  );
+  const [values, setValues] =
+    useState<CollaborationRequestFormValues>(initialFormValues);
 
-  const [
-    errors,
-    setErrors,
-  ] = useState<CollaborationFormErrors>({});
+  const [errors, setErrors] = useState<CollaborationFormErrors>({});
 
-  const [
-    submissionState,
-    setSubmissionState,
-  ] = useState<FormSubmissionState>("idle");
+  const [submissionState, setSubmissionState] =
+    useState<FormSubmissionState>("idle");
 
-  const clearFieldError = (
-    fieldName: keyof CollaborationRequestFormValues,
-  ) => {
+  const [submissionMessage, setSubmissionMessage] = useState("");
+
+  const [trackingCode, setTrackingCode] = useState<string | null>(null);
+
+  const [website, setWebsite] = useState("");
+
+  const clearFieldError = (fieldName: keyof CollaborationRequestFormValues) => {
     setErrors((currentErrors) => {
       if (!currentErrors[fieldName]) {
         return currentErrors;
@@ -137,68 +135,95 @@ export function Contact() {
     });
 
     setSubmissionState("idle");
+    setSubmissionMessage("");
+    setTrackingCode(null);
   };
 
-  const toggleProjectType = (
-    projectTypeId: CollaborationProjectTypeId,
-  ) => {
+  const toggleProjectType = (projectTypeId: CollaborationProjectTypeId) => {
     setValues((currentValues) => {
-      const isSelected =
-        currentValues.projectTypes.includes(
-          projectTypeId,
-        );
+      const isSelected = currentValues.projectTypes.includes(projectTypeId);
 
       return {
         ...currentValues,
         projectTypes: isSelected
           ? currentValues.projectTypes.filter(
               (selectedProjectTypeId) =>
-                selectedProjectTypeId !==
-                projectTypeId,
+                selectedProjectTypeId !== projectTypeId,
             )
-          : [
-              ...currentValues.projectTypes,
-              projectTypeId,
-            ],
+          : [...currentValues.projectTypes, projectTypeId],
       };
     });
 
     clearFieldError("projectTypes");
   };
 
-  const handleSubmit = (
-    event: FormEvent<HTMLFormElement>,
-  ) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const nextErrors =
-      validateForm(values);
+    if (submissionState === "submitting") {
+      return;
+    }
+
+    const nextErrors = validateForm(values);
 
     setErrors(nextErrors);
+    setSubmissionMessage("");
+    setTrackingCode(null);
 
     if (Object.keys(nextErrors).length > 0) {
       setSubmissionState("idle");
 
       window.requestAnimationFrame(() => {
         formRef.current
-          ?.querySelector<HTMLElement>(
-            '[aria-invalid="true"]',
-          )
+          ?.querySelector<HTMLElement>('[aria-invalid="true"]')
           ?.focus();
       });
 
       return;
     }
 
-    const normalizedPhone =
-      normalizeIranianMobile(values.phone);
+    setSubmissionState("submitting");
 
-    setValues((currentValues) => ({
-      ...currentValues,
-      phone: normalizedPhone,
-    }));
+    try {
+      const result = await submitCollaborationRequest({
+        ...values,
+        projectTypes: [...values.projectTypes],
+        website,
+      });
 
-    setSubmissionState("validated");
+      if (!result.ok) {
+        const serverErrors = mapServerFieldErrors(result.fieldErrors);
+
+        setErrors(serverErrors);
+        setSubmissionState("error");
+        setSubmissionMessage(result.message);
+
+        window.requestAnimationFrame(() => {
+          formRef.current
+            ?.querySelector<HTMLElement>('[aria-invalid="true"]')
+            ?.focus();
+        });
+
+        return;
+      }
+
+      setValues(initialFormValues);
+      setWebsite("");
+      setErrors({});
+      setTrackingCode(result.trackingCode);
+      setSubmissionState("success");
+
+      setSubmissionMessage(
+        result.telegramDelivered
+          ? "درخواست همکاری با موفقیت ثبت شد و اعلان آن برای من ارسال شد."
+          : "درخواست همکاری با موفقیت ثبت شد. اعلان تلگرام موقتاً ارسال نشد، اما اطلاعات تو در سیستم محفوظ است.",
+      );
+    } catch {
+      setSubmissionState("error");
+      setSubmissionMessage(
+        "ارتباط با سرور برقرار نشد. لطفاً چند دقیقه دیگر دوباره تلاش کن.",
+      );
+    }
   };
 
   const communicationItems = [
@@ -229,15 +254,8 @@ export function Contact() {
   ] as const;
 
   return (
-    <section
-      id="contact"
-      className="contact"
-      aria-labelledby="contact-title"
-    >
-      <div
-        className="contact__background"
-        aria-hidden="true"
-      >
+    <section id="contact" className="contact" aria-labelledby="contact-title">
+      <div className="contact__background" aria-hidden="true">
         <span className="contact__glow contact__glow--primary" />
         <span className="contact__glow contact__glow--secondary" />
         <span className="contact__grid" />
@@ -253,10 +271,7 @@ export function Contact() {
             {contactSectionContent.eyebrow}
           </span>
 
-          <h2
-            id="contact-title"
-            className="contact__title"
-          >
+          <h2 id="contact-title" className="contact__title">
             {contactSectionContent.title}
           </h2>
 
@@ -272,23 +287,29 @@ export function Contact() {
             onSubmit={handleSubmit}
             noValidate
           >
+            <div className="contact__honeypot" aria-hidden="true">
+              <label htmlFor="contact-website">وب‌سایت</label>
+
+              <input
+                id="contact-website"
+                name="website"
+                type="text"
+                tabIndex={-1}
+                autoComplete="off"
+                value={website}
+                onChange={(event) => {
+                  setWebsite(event.target.value);
+                }}
+              />
+            </div>
             <div className="contact__form-header">
               <div>
-                <h3>
-                  {contactSectionContent.formTitle}
-                </h3>
+                <h3>{contactSectionContent.formTitle}</h3>
 
-                <p>
-                  {
-                    contactSectionContent.formDescription
-                  }
-                </p>
+                <p>{contactSectionContent.formDescription}</p>
               </div>
 
-              <span
-                className="contact__form-status"
-                aria-hidden="true"
-              >
+              <span className="contact__form-status" aria-hidden="true">
                 فرم اولیه پروژه
               </span>
             </div>
@@ -314,22 +335,15 @@ export function Contact() {
 
                     clearFieldError("fullName");
                   }}
-                  aria-invalid={
-                    Boolean(errors.fullName)
-                  }
+                  aria-invalid={Boolean(errors.fullName)}
                   aria-describedby={
-                    errors.fullName
-                      ? "contact-full-name-error"
-                      : undefined
+                    errors.fullName ? "contact-full-name-error" : undefined
                   }
                   placeholder="مثلاً عرفان رحمتی"
                 />
 
                 {errors.fullName ? (
-                  <span
-                    id="contact-full-name-error"
-                    className="contact__error"
-                  >
+                  <span id="contact-full-name-error" className="contact__error">
                     {errors.fullName}
                   </span>
                 ) : null}
@@ -352,46 +366,28 @@ export function Contact() {
                   onChange={(event) => {
                     setValues((currentValues) => ({
                       ...currentValues,
-                      phone: sanitizePhoneInput(
-                        event.target.value,
-                      ),
+                      phone: sanitizePhoneInput(event.target.value),
                     }));
 
                     clearFieldError("phone");
                   }}
                   onBlur={() => {
-                    if (
-                      isValidIranianMobile(
-                        values.phone,
-                      )
-                    ) {
-                      setValues(
-                        (currentValues) => ({
-                          ...currentValues,
-                          phone:
-                            normalizeIranianMobile(
-                              currentValues.phone,
-                            ),
-                        }),
-                      );
+                    if (isValidIranianMobile(values.phone)) {
+                      setValues((currentValues) => ({
+                        ...currentValues,
+                        phone: normalizeIranianMobile(currentValues.phone),
+                      }));
                     }
                   }}
-                  aria-invalid={
-                    Boolean(errors.phone)
-                  }
+                  aria-invalid={Boolean(errors.phone)}
                   aria-describedby={
-                    errors.phone
-                      ? "contact-phone-error"
-                      : undefined
+                    errors.phone ? "contact-phone-error" : undefined
                   }
                   placeholder="09354055150"
                 />
 
                 {errors.phone ? (
-                  <span
-                    id="contact-phone-error"
-                    className="contact__error"
-                  >
+                  <span id="contact-phone-error" className="contact__error">
                     {errors.phone}
                   </span>
                 ) : null}
@@ -402,9 +398,7 @@ export function Contact() {
                   contact__fieldset
                   contact__fieldset--full
                 "
-                aria-invalid={
-                  Boolean(errors.projectTypes)
-                }
+                aria-invalid={Boolean(errors.projectTypes)}
                 aria-describedby={
                   errors.projectTypes
                     ? "contact-project-types-error"
@@ -421,46 +415,37 @@ export function Contact() {
                 </p>
 
                 <div className="contact__project-options">
-                  {collaborationProjectTypeOptions.map(
-                    (option) => {
-                      const isSelected =
-                        values.projectTypes.includes(
-                          option.id,
-                        );
+                  {collaborationProjectTypeOptions.map((option) => {
+                    const isSelected = values.projectTypes.includes(option.id);
 
-                      return (
-                        <label
-                          key={option.id}
-                          className={
-                            isSelected
-                              ? "contact__option is-selected"
-                              : "contact__option"
-                          }
-                        >
-                          <input
-                            type="checkbox"
-                            name="projectTypes"
-                            value={option.id}
-                            checked={isSelected}
-                            onChange={() => {
-                              toggleProjectType(
-                                option.id,
-                              );
-                            }}
-                          />
+                    return (
+                      <label
+                        key={option.id}
+                        className={
+                          isSelected
+                            ? "contact__option is-selected"
+                            : "contact__option"
+                        }
+                      >
+                        <input
+                          type="checkbox"
+                          name="projectTypes"
+                          value={option.id}
+                          checked={isSelected}
+                          onChange={() => {
+                            toggleProjectType(option.id);
+                          }}
+                        />
 
-                          <span
-                            className="contact__option-check"
-                            aria-hidden="true"
-                          />
+                        <span
+                          className="contact__option-check"
+                          aria-hidden="true"
+                        />
 
-                          <span>
-                            {option.label}
-                          </span>
-                        </label>
-                      );
-                    },
-                  )}
+                        <span>{option.label}</span>
+                      </label>
+                    );
+                  })}
                 </div>
 
                 {errors.projectTypes ? (
@@ -478,13 +463,9 @@ export function Contact() {
                   contact__fieldset
                   contact__fieldset--full
                 "
-                aria-invalid={
-                  Boolean(errors.proposedDuration)
-                }
+                aria-invalid={Boolean(errors.proposedDuration)}
                 aria-describedby={
-                  errors.proposedDuration
-                    ? "contact-duration-error"
-                    : undefined
+                  errors.proposedDuration ? "contact-duration-error" : undefined
                 }
               >
                 <legend>
@@ -493,60 +474,46 @@ export function Contact() {
                 </legend>
 
                 <div className="contact__duration-options">
-                  {collaborationDurationOptions.map(
-                    (option) => {
-                      const isSelected =
-                        values.proposedDuration ===
-                        option.id;
+                  {collaborationDurationOptions.map((option) => {
+                    const isSelected = values.proposedDuration === option.id;
 
-                      return (
-                        <label
-                          key={option.id}
-                          className={
-                            isSelected
-                              ? "contact__duration is-selected"
-                              : "contact__duration"
-                          }
-                        >
-                          <input
-                            type="radio"
-                            name="proposedDuration"
-                            value={option.id}
-                            checked={isSelected}
-                            onChange={() => {
-                              setValues(
-                                (currentValues) => ({
-                                  ...currentValues,
-                                  proposedDuration:
-                                    option.id,
-                                }),
-                              );
+                    return (
+                      <label
+                        key={option.id}
+                        className={
+                          isSelected
+                            ? "contact__duration is-selected"
+                            : "contact__duration"
+                        }
+                      >
+                        <input
+                          type="radio"
+                          name="proposedDuration"
+                          value={option.id}
+                          checked={isSelected}
+                          onChange={() => {
+                            setValues((currentValues) => ({
+                              ...currentValues,
+                              proposedDuration: option.id,
+                            }));
 
-                              clearFieldError(
-                                "proposedDuration",
-                              );
-                            }}
-                          />
+                            clearFieldError("proposedDuration");
+                          }}
+                        />
 
-                          <span
-                            className="contact__duration-radio"
-                            aria-hidden="true"
-                          />
+                        <span
+                          className="contact__duration-radio"
+                          aria-hidden="true"
+                        />
 
-                          <span>
-                            {option.label}
-                          </span>
-                        </label>
-                      );
-                    },
-                  )}
+                        <span>{option.label}</span>
+                      </label>
+                    );
+                  })}
                 </div>
 
                 {errors.proposedDuration ? (
-                  <span
-                    id="contact-duration-error"
-                    className="contact__error"
-                  >
+                  <span id="contact-duration-error" className="contact__error">
                     {errors.proposedDuration}
                   </span>
                 ) : null}
@@ -565,23 +532,16 @@ export function Contact() {
                     type="text"
                     inputMode="numeric"
                     dir="ltr"
-                    value={formatBudgetInput(
-                      values.proposedBudgetToman,
-                    )}
+                    value={formatBudgetInput(values.proposedBudgetToman)}
                     onChange={(event) => {
-                      setValues(
-                        (currentValues) => ({
-                          ...currentValues,
-                          proposedBudgetToman:
-                            sanitizeBudgetInput(
-                              event.target.value,
-                            ),
-                        }),
-                      );
+                      setValues((currentValues) => ({
+                        ...currentValues,
+                        proposedBudgetToman: sanitizeBudgetInput(
+                          event.target.value,
+                        ),
+                      }));
 
-                      clearFieldError(
-                        "proposedBudgetToman",
-                      );
+                      clearFieldError("proposedBudgetToman");
                     }}
                     placeholder="۱۵۰,۰۰۰,۰۰۰"
                   />
@@ -613,8 +573,7 @@ export function Contact() {
                   onChange={(event) => {
                     setValues((currentValues) => ({
                       ...currentValues,
-                      description:
-                        event.target.value,
+                      description: event.target.value,
                     }));
 
                     clearFieldError("description");
@@ -628,33 +587,42 @@ export function Contact() {
               <button
                 type="submit"
                 className="contact__submit"
+                disabled={submissionState === "submitting"}
+                aria-busy={submissionState === "submitting"}
               >
                 <span>
-                  {contactSectionContent.submitLabel}
+                  {submissionState === "submitting"
+                    ? contactSectionContent.submittingLabel
+                    : contactSectionContent.submitLabel}
                 </span>
 
                 <ContactSendIcon />
               </button>
 
               <p className="contact__privacy-note">
-                اطلاعات فرم فقط برای بررسی درخواست
-                همکاری استفاده خواهد شد.
+                اطلاعات فرم فقط برای بررسی درخواست همکاری استفاده خواهد شد.
               </p>
             </div>
 
             <div
-              className={
-                submissionState === "validated"
-                  ? "contact__submission-message is-visible"
-                  : "contact__submission-message"
-              }
-              role="status"
+              className={[
+                "contact__submission-message",
+                submissionState === "success" ? "is-visible is-success" : "",
+                submissionState === "error" ? "is-visible is-error" : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+              role={submissionState === "error" ? "alert" : "status"}
               aria-live="polite"
             >
-              فرم بدون خطا تکمیل شده است؛ هنوز
-              اطلاعاتی ارسال نشده و اتصال امن به
-              PostgreSQL و Telegram در مرحله Backend
-              انجام می‌شود.
+              <span>{submissionMessage}</span>
+
+              {trackingCode ? (
+                <span className="contact__tracking-code">
+                  کد پیگیری:
+                  <bdi>{trackingCode}</bdi>
+                </span>
+              ) : null}
             </div>
           </form>
 
@@ -663,21 +631,13 @@ export function Contact() {
             aria-labelledby="contact-communication-title"
           >
             <div className="contact__communication-heading">
-              <span className="contact__communication-mark">
-                ارتباط
-              </span>
+              <span className="contact__communication-mark">ارتباط</span>
 
               <h3 id="contact-communication-title">
-                {
-                  contactSectionContent.communicationTitle
-                }
+                {contactSectionContent.communicationTitle}
               </h3>
 
-              <p>
-                {
-                  contactSectionContent.communicationDescription
-                }
-              </p>
+              <p>{contactSectionContent.communicationDescription}</p>
             </div>
 
             <div className="contact__communication-list">
@@ -686,16 +646,8 @@ export function Contact() {
                   key={item.id}
                   href={item.href}
                   className="contact__communication-link"
-                  target={
-                    item.external
-                      ? "_blank"
-                      : undefined
-                  }
-                  rel={
-                    item.external
-                      ? "noreferrer"
-                      : undefined
-                  }
+                  target={item.external ? "_blank" : undefined}
+                  rel={item.external ? "noreferrer" : undefined}
                   aria-label={`${item.label}: ${item.value}`}
                 >
                   <span className="contact__communication-icon">
@@ -704,9 +656,7 @@ export function Contact() {
 
                   <span className="contact__communication-content">
                     <small>{item.label}</small>
-                    <strong dir="ltr">
-                      {item.value}
-                    </strong>
+                    <strong dir="ltr">{item.value}</strong>
                   </span>
 
                   <ContactArrowIcon className="contact__communication-arrow" />
@@ -718,9 +668,8 @@ export function Contact() {
               <span aria-hidden="true" />
 
               <p>
-                برای پروژه‌های جدید، ثبت فرم کمک
-                می‌کند اطلاعات اولیه منظم‌تر بررسی
-                شوند.
+                برای پروژه‌های جدید، ثبت فرم کمک می‌کند اطلاعات اولیه منظم‌تر
+                بررسی شوند.
               </p>
             </div>
           </aside>
