@@ -8,9 +8,8 @@ export type AboutContent = Readonly<{
   name: string;
   role: string;
   title: string;
-  introduction: readonly string[];
-  philosophyTitle: string;
-  philosophy: readonly string[];
+  summary: string;
+  productMindset: string;
   primaryAction: AboutAction;
   secondaryAction: AboutAction;
 }>;
@@ -46,17 +45,16 @@ export type AboutExpertiseId =
 export type AboutExpertise = Readonly<{
   id: AboutExpertiseId;
   title: string;
+  technologies: readonly string[];
   description: string;
 }>;
 
 export type AboutProjectTypeId =
-  | "custom-applications"
+  | "custom-products"
   | "dashboards"
-  | "saas"
   | "ecommerce"
   | "corporate"
-  | "wordpress"
-  | "wordpress-development";
+  | "wordpress";
 
 export type AboutProjectType = Readonly<{
   id: AboutProjectTypeId;
