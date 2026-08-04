@@ -1,0 +1,2 @@
+ALTER TABLE "collaboration_requests" ADD COLUMN "submission_id" uuid DEFAULT gen_random_uuid() NOT NULL;--> statement-breakpoint
+CREATE UNIQUE INDEX "collaboration_requests_submission_id_unique" ON "collaboration_requests" USING btree ("submission_id");

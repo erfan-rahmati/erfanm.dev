@@ -18,6 +18,7 @@ const postgresConnectionSchema = z
 
 const serverEnvironmentSchema = z.object({
   DATABASE_URL: postgresConnectionSchema,
+
   TELEGRAM_BOT_TOKEN: z
     .string()
     .trim()
@@ -25,6 +26,7 @@ const serverEnvironmentSchema = z.object({
       /^\d+:[A-Za-z0-9_-]{30,}$/,
       "Telegram Bot Token is invalid.",
     ),
+
   TELEGRAM_CHAT_ID: z
     .string()
     .trim()
@@ -32,16 +34,37 @@ const serverEnvironmentSchema = z.object({
       /^-?\d+$/,
       "Telegram Chat ID is invalid.",
     ),
+
+  REQUEST_SECURITY_SECRET: z
+    .string()
+    .trim()
+    .min(
+      43,
+      "Request security secret must contain at least 43 characters.",
+    )
+    .max(
+      256,
+      "Request security secret is unexpectedly long.",
+    )
+    .regex(
+      /^[A-Za-z0-9_-]+$/,
+      "Request security secret must be Base64URL-compatible.",
+    ),
 });
 
 const parsedServerEnvironment =
   serverEnvironmentSchema.safeParse({
     DATABASE_URL:
       process.env.DATABASE_URL,
+
     TELEGRAM_BOT_TOKEN:
       process.env.TELEGRAM_BOT_TOKEN,
+
     TELEGRAM_CHAT_ID:
       process.env.TELEGRAM_CHAT_ID,
+
+    REQUEST_SECURITY_SECRET:
+      process.env.REQUEST_SECURITY_SECRET,
   });
 
 if (!parsedServerEnvironment.success) {

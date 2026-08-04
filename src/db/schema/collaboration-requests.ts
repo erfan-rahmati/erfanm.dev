@@ -51,6 +51,12 @@ export const collaborationRequests =
         .defaultRandom()
         .primaryKey(),
 
+      submissionId: uuid(
+        "submission_id",
+      )
+        .defaultRandom()
+        .notNull(),
+
       trackingCode: varchar(
         "tracking_code",
         {
@@ -147,6 +153,10 @@ export const collaborationRequests =
         .notNull(),
     },
     (table) => [
+      uniqueIndex(
+        "collaboration_requests_submission_id_unique",
+      ).on(table.submissionId),
+
       uniqueIndex(
         "collaboration_requests_tracking_code_unique",
       ).on(table.trackingCode),
