@@ -5,6 +5,7 @@
 @import "../features/home/gallery/gallery.css";
 @import "../features/home/about/about.css";
 @import "../features/home/skills/skills.css";
+@import "../features/home/recent-articles/recent-articles.css";
 
 *,
 *::before,
