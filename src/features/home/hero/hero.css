@@ -517,19 +517,30 @@ Do not manually change layout values during migration. */
   border-radius: 6px;
 }
 .hero__reveal {
-  opacity: 0;
-  transform: translateY(28px) scale(0.98);
-  filter: blur(6px);
-  transition:
-    opacity var(--transition-slow),
-    transform var(--transition-slow),
-    filter var(--transition-slow);
-  transition-delay: calc(var(--stagger, 0) * 0.09s);
-}
-.hero--loaded .hero__reveal {
   opacity: 1;
   transform: none;
-  filter: blur(0);
+  filter: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero__reveal {
+    animation: heroReveal 0.72s ease both;
+    animation-delay: calc(var(--stagger, 0) * 0.09s);
+  }
+}
+
+@keyframes heroReveal {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.985);
+    filter: blur(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
 }
 
 .hero a:focus-visible,
@@ -703,7 +714,7 @@ Do not manually change layout values during migration. */
 @media (max-width: 768px) {
 
   .hero {
-    min-height: auto;
+    min-height: 100svh;
     padding-top: calc(var(--header-height-mobile) + 24px);
     padding-bottom: 48px;
   }
@@ -808,6 +819,14 @@ Do not manually change layout values during migration. */
     width: 360px;
     height: 360px;
     filter: blur(90px);
+  }
+}
+
+@supports (min-height: 100dvh) {
+  @media (max-width: 768px) {
+    .hero {
+      min-height: 100dvh;
+    }
   }
 }
 

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState, type CSSProperties } from "react";
+import { useState, type CSSProperties } from "react";
 
 import { heroBrowserToneClassNames, heroTechnologyAssets } from "./hero.assets";
 import {
@@ -39,18 +39,7 @@ function createBrowserClassName(toneClassName: string): string {
 
 export function Hero() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isLoaded, setIsLoaded] = useState(false);
   const [hasProfileImageError, setHasProfileImageError] = useState(false);
-
-  useEffect(() => {
-    const animationFrameId = window.requestAnimationFrame(() => {
-      setIsLoaded(true);
-    });
-
-    return () => {
-      window.cancelAnimationFrame(animationFrameId);
-    };
-  }, []);
 
   function goToScene(index: number) {
     const totalProjects = heroProjects.length;
@@ -68,10 +57,6 @@ export function Hero() {
     goToScene(activeIndex + 1);
   }
 
-  const heroClassName = ["hero", isLoaded ? "hero--loaded" : ""]
-    .filter(Boolean)
-    .join(" ");
-
   const profileClassName = [
     "hero__photo",
     "pf-box",
@@ -81,7 +66,7 @@ export function Hero() {
     .join(" ");
 
   return (
-    <section id="home" className={heroClassName} aria-label="معرفی">
+    <section id="home" className="hero" aria-label="معرفی">
       <div className="hero__bg" aria-hidden="true">
         <span className="hero__glow hero__glow--primary" />
         <span className="hero__glow hero__glow--secondary" />

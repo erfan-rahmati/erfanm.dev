@@ -119,6 +119,25 @@ to preserve the legacy fallback behavior. */
   will-change: transform;
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
+  animation: galleryFallbackMarquee 38s linear infinite;
+}
+
+.gallery__row[data-direction="right"] .gallery__track {
+  animation-direction: reverse;
+}
+
+.gallery__row[data-marquee-enhanced="true"] .gallery__track {
+  animation: none;
+}
+
+@keyframes galleryFallbackMarquee {
+  to {
+    transform: translate3d(
+      calc(-50% - (var(--marquee-gap) / 2)),
+      0,
+      0
+    );
+  }
 }
 
 .gallery__row.is-dragging .gallery__track {
@@ -265,9 +284,46 @@ to preserve the legacy fallback behavior. */
     font-size: 0.85rem;
   }
 }
+@media (max-width: 600px) {
+  .gallery__ticker {
+    position: relative;
+    gap: 0;
+  }
+
+  .gallery__row--secondary {
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    width: 100%;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .gallery__item--desktop {
+    width: min(82vw, 330px);
+  }
+
+  .gallery__item--mobile {
+    width: min(38vw, 145px);
+    height: auto;
+  }
+
+  .gallery__brands {
+    margin-top: 42px;
+  }
+}
+
 @media (max-width: 480px) {
 
   :root {
     --marquee-gap: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery__track {
+    animation: none;
   }
 }

@@ -34,10 +34,10 @@ function getImageSizes(
   variant: GalleryItemVariant,
 ): string {
   if (variant === "desktop") {
-    return "(max-width: 768px) 430px, 430px";
+    return "(max-width: 600px) 330px, (max-width: 768px) 390px, 430px";
   }
 
-  return "(max-width: 768px) 180px, 180px";
+  return "(max-width: 600px) 145px, (max-width: 768px) 165px, 180px";
 }
 
 function GalleryMarqueeRow({
@@ -48,45 +48,60 @@ function GalleryMarqueeRow({
     trackRef,
   } = useGalleryMarquee(row.direction);
 
+  const rowClassName = [
+    "gallery__row",
+    `gallery__row--${row.id}`,
+  ].join(" ");
+
+  function renderItems(isFallbackCopy: boolean) {
+    return row.items.map((item) => {
+      const imageAsset =
+        galleryImageAssets[item.src];
+
+      return (
+        <li
+          key={`${isFallbackCopy ? "fallback" : "original"}-${item.id}`}
+          className={[
+            "gallery__item",
+            `gallery__item--${item.variant}`,
+          ].join(" ")}
+          data-gallery-fallback-copy={
+            isFallbackCopy ? "true" : undefined
+          }
+          aria-hidden={isFallbackCopy ? true : undefined}
+        >
+          <div className="gallery__card">
+            <Image
+              src={item.src}
+              alt={isFallbackCopy ? "" : item.alt}
+              width={imageAsset.width}
+              height={imageAsset.height}
+              sizes={getImageSizes(
+                item.variant,
+              )}
+              loading="lazy"
+              draggable={false}
+            />
+          </div>
+        </li>
+      );
+    });
+  }
+
   return (
     <div
       ref={rowRef}
-      className="gallery__row"
+      className={rowClassName}
       data-direction={row.direction}
+      aria-hidden={row.id === "secondary" ? true : undefined}
     >
       <ul
         ref={trackRef}
         className="gallery__track"
         id={getTrackId(row.id)}
       >
-        {row.items.map((item) => {
-          const imageAsset =
-            galleryImageAssets[item.src];
-
-          return (
-            <li
-              key={item.id}
-              className={[
-                "gallery__item",
-                `gallery__item--${item.variant}`,
-              ].join(" ")}
-            >
-              <div className="gallery__card">
-                <Image
-                  src={item.src}
-                  alt={item.alt}
-                  width={imageAsset.width}
-                  height={imageAsset.height}
-                  sizes={getImageSizes(
-                    item.variant,
-                  )}
-                  loading="lazy"
-                  draggable={false}
-                />
-              </div>
-            </li>
-          );
-        })}
+        {renderItems(false)}
+        {renderItems(true)}
       </ul>
     </div>
   );

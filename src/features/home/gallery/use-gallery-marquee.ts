@@ -9,6 +9,8 @@ import { GALLERY_MARQUEE_CONFIG } from "./gallery.constants";
 import type { GalleryDirection } from "./gallery.types";
 
 const CLONE_ATTRIBUTE = "data-gallery-clone";
+const FALLBACK_COPY_ATTRIBUTE =
+  "data-gallery-fallback-copy";
 
 function isHTMLElement(
   element: Element,
@@ -44,12 +46,23 @@ export function useGalleryMarquee(
     ).filter(
       (element): element is HTMLElement =>
         isHTMLElement(element) &&
-        element.getAttribute(CLONE_ATTRIBUTE) !== "true",
+        element.getAttribute(CLONE_ATTRIBUTE) !== "true" &&
+        element.getAttribute(FALLBACK_COPY_ATTRIBUTE) !== "true",
     );
 
     if (originalItems.length === 0) {
       return;
     }
+
+    rowElement.dataset.marqueeEnhanced = "true";
+
+    trackElement
+      .querySelectorAll<HTMLElement>(
+        `[${FALLBACK_COPY_ATTRIBUTE}="true"]`,
+      )
+      .forEach((fallbackCopy) => {
+        fallbackCopy.remove();
+      });
 
     const motionPreference = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
@@ -485,6 +498,7 @@ export function useGalleryMarquee(
       );
 
       rowElement.classList.remove("is-dragging");
+      delete rowElement.dataset.marqueeEnhanced;
 
       removeClones();
 
