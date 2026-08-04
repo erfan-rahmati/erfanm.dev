@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import {
   aboutContent,
   aboutDetails,
@@ -27,37 +29,37 @@ export function About() {
 
       <div className="about__container">
         <header className="about__header">
-          <span className="about__eyebrow">
-            <span className="about__eyebrow-dot" aria-hidden="true" />
-            {aboutContent.eyebrow}
-          </span>
-
-          <h2 id="about-title" className="about__title">
-            {aboutContent.title}
-          </h2>
-
-          <div className="about__identity">
-            <strong>{aboutContent.name}</strong>
-
-            <span className="about__identity-separator" aria-hidden="true" />
-
-            <span className="about__role" dir="ltr">
-              {aboutContent.role}
+          <div className="about__heading">
+            <span className="about__eyebrow">
+              <span className="about__eyebrow-dot" aria-hidden="true" />
+              {aboutContent.eyebrow}
             </span>
+
+            <h2 id="about-title" className="about__title">
+              {aboutContent.title}
+            </h2>
           </div>
+
+          <p className="about__role" dir="ltr">
+            {aboutContent.role}
+          </p>
         </header>
 
         <div className="about__overview">
           <article className="about__story">
-            <div className="about__story-label">
-              <span aria-hidden="true">01</span>
-              <span>مسیر و تجربه</span>
-            </div>
+            <p className="about__summary">
+              {aboutContent.summary}
+            </p>
 
-            <div className="about__story-content">
-              {aboutContent.introduction.map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
-              ))}
+            <div className="about__mindset">
+              <span className="about__mindset-icon">
+                <AboutPhilosophyIcon />
+              </span>
+
+              <div>
+                <strong>Product Thinking</strong>
+                <p>{aboutContent.productMindset}</p>
+              </div>
             </div>
 
             <div className="about__actions">
@@ -81,16 +83,23 @@ export function About() {
 
           <aside className="about__profile-card" aria-label="اطلاعات حرفه‌ای">
             <div className="about__profile-heading">
-              <div className="about__monogram" aria-hidden="true">
-                ER
+              <div className="about__profile-photo">
+                <Image
+                  src="/images/profile/erfan-rahmati.png"
+                  alt="تصویر عرفان رحمتی"
+                  width={640}
+                  height={800}
+                  sizes="(max-width: 768px) 72px, 92px"
+                />
               </div>
 
-              <div>
+              <div className="about__profile-copy">
                 <span className="about__profile-status">
                   آماده همکاری
                 </span>
 
                 <strong>{aboutContent.name}</strong>
+                <span>فریلنس، پروژه‌ای و دورکاری</span>
               </div>
             </div>
 
@@ -100,8 +109,8 @@ export function About() {
                   key={statistic.id}
                   className="about__statistic"
                 >
-                  <dt>{statistic.label}</dt>
                   <dd>{statistic.value}</dd>
+                  <dt>{statistic.label}</dt>
                 </div>
               ))}
             </dl>
@@ -123,61 +132,45 @@ export function About() {
           </aside>
         </div>
 
-        <article className="about__philosophy">
-          <div className="about__philosophy-icon">
-            <AboutPhilosophyIcon />
-          </div>
-
-          <div className="about__philosophy-heading">
-            <span>Product Thinking</span>
-            <h3>{aboutContent.philosophyTitle}</h3>
-          </div>
-
-          <div className="about__philosophy-content">
-            {aboutContent.philosophy.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
-          </div>
-        </article>
-
         <div className="about__expertise-section">
           <div className="about__section-heading">
             <div>
-              <span>توانمندی‌ها</span>
-              <h3>تخصص‌های اصلی</h3>
+              <span>تخصص‌های اصلی</span>
+              <h3>یک مسیر کامل؛ از رابط کاربری تا محصول نهایی</h3>
             </div>
 
             <p>
-              ترکیبی از توسعه رابط کاربری، Back-End و معماری محصول
-              برای ساخت راهکارهای کامل و قابل توسعه.
+              شش حوزه‌ای که بیشترین نقش را در پروژه‌های من دارند.
             </p>
           </div>
 
           <ul className="about__expertise-list">
-            {aboutExpertise.map((expertise, index) => (
+            {aboutExpertise.map((expertise) => (
               <li key={expertise.id} className="about__expertise-card">
-                <div className="about__expertise-card-header">
-                  <span className="about__expertise-icon">
-                    <AboutExpertiseIcon id={expertise.id} />
-                  </span>
+                <span className="about__expertise-icon">
+                  <AboutExpertiseIcon id={expertise.id} />
+                </span>
 
-                  <span className="about__expertise-number" aria-hidden="true">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
+                <div className="about__expertise-copy">
+                  <h4>{expertise.title}</h4>
+
+                  <div className="about__expertise-technologies">
+                    {expertise.technologies.map((technology) => (
+                      <span key={technology} dir="ltr">
+                        {technology}
+                      </span>
+                    ))}
+                  </div>
+
+                  <p>{expertise.description}</p>
                 </div>
-
-                <h4>{expertise.title}</h4>
-                <p>{expertise.description}</p>
               </li>
             ))}
           </ul>
         </div>
 
         <div className="about__project-types">
-          <div className="about__project-types-heading">
-            <span>حوزه همکاری</span>
-            <h3>پروژه‌هایی که انجام می‌دهم</h3>
-          </div>
+          <strong>پروژه‌هایی که انجام می‌دهم</strong>
 
           <ul className="about__project-types-list">
             {aboutProjectTypes.map((projectType) => (

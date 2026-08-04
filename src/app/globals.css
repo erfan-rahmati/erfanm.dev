@@ -4,6 +4,7 @@
 @import "../features/home/hero/hero.css";
 @import "../features/home/gallery/gallery.css";
 @import "../features/home/about/about.css";
+@import "../features/home/skills/skills.css";
 
 *,
 *::before,

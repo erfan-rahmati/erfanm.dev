@@ -9,18 +9,12 @@ import type {
 export const aboutContent = {
   eyebrow: "درباره من",
   name: "عرفان رحمتی",
-  role: "Full-Stack Developer | React, Next.js & ASP.NET",
-  title:
-    "از ایده تا محصول؛ با تمرکز بر کیفیت و رشد بلندمدت",
-  introduction: [
-    "من عرفان رحمتی، توسعه‌دهنده فول‌استک با تمرکز بر React، Next.js و ASP.NET هستم. وب‌سایت‌ها و وب‌اپلیکیشن‌هایی طراحی و توسعه می‌دهم که در کنار ظاهر حرفه‌ای، سریع، مقیاس‌پذیر و قابل توسعه باشند.",
-    "در هر پروژه تلاش می‌کنم تصمیم‌های فنی را با نیاز واقعی کاربران و اهداف کسب‌وکار هماهنگ کنم. حوزه کاری من از طراحی رابط‌های کاربری مدرن و واکنش‌گرا تا توسعه Back-End، وب‌اپلیکیشن‌های قابل نصب و راهکارهای اختصاصی و وردپرسی را پوشش می‌دهد.",
-  ],
-  philosophyTitle: "نگاه من به توسعه محصول",
-  philosophy: [
-    "برای من توسعه یک پروژه فقط به نوشتن کد محدود نمی‌شود. هر محصول را با نگاه محصول‌محور بررسی می‌کنم و به خوانایی کد، معماری مناسب، تجربه کاربری، قابلیت نگهداری و توسعه آینده اهمیت می‌دهم.",
-    "هدفم ارائه راهکاری است که علاوه بر برطرف‌کردن نیاز فعلی، در بلندمدت نیز پایدار، قابل مدیریت و قابل گسترش باشد.",
-  ],
+  role: "Full-Stack Developer | React, Next.js & ASP.NET Core",
+  title: "توسعه فول‌استک با نگاه محصول‌محور",
+  summary:
+    "من عرفان رحمتی هستم؛ توسعه‌دهنده فول‌استک با تمرکز بر React، Next.js و ASP.NET Core. محصولات وب سریع، مقیاس‌پذیر و قابل توسعه را از رابط کاربری تا Back-End طراحی و پیاده‌سازی می‌کنم.",
+  productMindset:
+    "در هر پروژه فقط به تحویل کد فکر نمی‌کنم؛ معماری، تجربه کاربری، نگهداری آینده و هدف کسب‌وکار را کنار هم می‌بینم تا راهکار نهایی در بلندمدت هم ارزشمند بماند.",
   primaryAction: {
     label: "شروع همکاری",
     href: "#contact",
@@ -61,68 +55,66 @@ export const aboutExpertise = [
   {
     id: "frontend",
     title: "Front-End مدرن",
+    technologies: ["React", "Next.js"],
     description:
-      "توسعه رابط‌های سریع و قابل توسعه با React، Next.js، TypeScript و Tailwind CSS.",
+      "توسعه رابط‌های سریع، تعاملی و قابل نگهداری با معماری Component-Based.",
   },
   {
     id: "interface-design",
-    title: "رابط کاربری واکنش‌گرا",
+    title: "رابط کاربری و کیفیت",
+    technologies: ["TypeScript", "Tailwind CSS"],
     description:
-      "طراحی و پیاده‌سازی رابط‌های حرفه‌ای با تمرکز بر تجربه کاربری و نمایش صحیح در اندازه‌های مختلف.",
+      "طراحی واکنش‌گرا، مدل‌سازی Type-Safe و تجربه کاربری منسجم در همه نمایشگرها.",
   },
   {
     id: "backend",
-    title: "Back-End",
+    title: "Back-End ساخت‌یافته",
+    technologies: ["ASP.NET Core", "C#"],
     description:
-      "توسعه منطق سمت سرور و سرویس‌های کاربردی با ASP.NET، Node.js و REST API.",
+      "پیاده‌سازی منطق سمت سرور و سامانه‌های قابل توسعه با معماری روشن و پایدار.",
   },
   {
     id: "architecture",
-    title: "معماری و کیفیت کد",
+    title: "API و سرویس‌ها",
+    technologies: ["Node.js", "REST API"],
     description:
-      "ساختاردهی پروژه‌ها با تمرکز بر خوانایی، نگهداری‌پذیری و قابلیت توسعه در آینده.",
+      "ساخت سرویس‌ها، احراز هویت و ارتباط مطمئن میان بخش‌های مختلف محصول.",
   },
   {
     id: "pwa",
-    title: "Progressive Web App",
+    title: "Web Platform",
+    technologies: ["PWA", "Service Worker"],
     description:
-      "ساخت وب‌اپلیکیشن‌های قابل نصب با قابلیت‌های آفلاین و تجربه نزدیک به اپلیکیشن‌های بومی.",
+      "ساخت وب‌اپلیکیشن‌های قابل نصب با قابلیت آفلاین و تجربه نزدیک به اپلیکیشن بومی.",
   },
   {
     id: "wordpress",
-    title: "PHP و WordPress",
+    title: "WordPress Development",
+    technologies: ["PHP", "WooCommerce"],
     description:
-      "طراحی وب‌سایت‌های اقتصادی و توسعه قالب‌ها و افزونه‌های اختصاصی WordPress.",
+      "توسعه قالب، افزونه و فروشگاه‌های اختصاصی متناسب با نیاز واقعی کسب‌وکار.",
   },
 ] as const satisfies readonly AboutExpertise[];
 
 export const aboutProjectTypes = [
   {
-    id: "custom-applications",
-    label: "وب‌اپلیکیشن‌های اختصاصی",
+    id: "custom-products",
+    label: "وب‌اپلیکیشن اختصاصی و SaaS",
   },
   {
     id: "dashboards",
-    label: "داشبوردها و پنل‌های مدیریتی",
-  },
-  {
-    id: "saas",
-    label: "محصولات SaaS و پلتفرم‌های آنلاین",
+    label: "داشبورد و پنل مدیریتی",
   },
   {
     id: "ecommerce",
-    label: "فروشگاه‌های اینترنتی حرفه‌ای",
+    label: "فروشگاه اینترنتی حرفه‌ای",
   },
   {
     id: "corporate",
-    label: "وب‌سایت شرکتی و Landing Page",
+    label: "سایت شرکتی و Landing Page",
   },
   {
     id: "wordpress",
-    label: "وب‌سایت‌های اقتصادی WordPress",
-  },
-  {
-    id: "wordpress-development",
-    label: "افزونه‌نویسی و قالب‌نویسی",
+    label: "WordPress، قالب و افزونه اختصاصی",
   },
 ] as const satisfies readonly AboutProjectType[];
