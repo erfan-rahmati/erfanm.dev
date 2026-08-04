@@ -7,6 +7,7 @@ import type { ReactNode } from "react";
 
 import { siteConfig } from "@/config/site";
 import { SiteNavigation } from "@/components/layout/site-navigation/site-navigation";
+import { SiteFooter } from "@/components/layout/site-footer/site-footer";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -48,6 +49,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <body className="antialiased">
         <SiteNavigation />
         {children}
+        <SiteFooter />
       </body>
     </html>
   );
