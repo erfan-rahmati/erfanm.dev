@@ -1,4 +1,5 @@
 import { About } from "@/features/home/about/about";
+import { Contact } from "@/features/home/contact/contact";
 import { Gallery } from "@/features/home/gallery/gallery";
 import { Hero } from "@/features/home/hero/hero";
 import { RecentArticles } from "@/features/home/recent-articles/recent-articles";
@@ -12,6 +13,7 @@ export default function HomePage() {
       <About />
       <Skills />
       <RecentArticles />
+      <Contact />
     </main>
   );
 }

@@ -6,6 +6,8 @@
 @import "../features/home/about/about.css";
 @import "../features/home/skills/skills.css";
 @import "../features/home/recent-articles/recent-articles.css";
+@import "../features/home/contact/contact.css";
+@import "../components/layout/site-footer/site-footer.css";
 
 *,
 *::before,
@@ -46,6 +48,10 @@ input,
 textarea,
 select {
   font: inherit;
+}
+
+input {
+  direction: rtl;
 }
 
 button {
