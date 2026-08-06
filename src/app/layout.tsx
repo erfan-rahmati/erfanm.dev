@@ -6,8 +6,6 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 import { siteConfig } from "@/config/site";
-import { SiteNavigation } from "@/components/layout/site-navigation/site-navigation";
-import { SiteFooter } from "@/components/layout/site-footer/site-footer";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -43,13 +41,16 @@ type RootLayoutProps = Readonly<{
   children: ReactNode;
 }>;
 
-export default function RootLayout({ children }: RootLayoutProps) {
+export default function RootLayout({
+  children,
+}: RootLayoutProps) {
   return (
-    <html lang={siteConfig.language} dir="rtl">
+    <html
+      lang={siteConfig.language}
+      dir="rtl"
+    >
       <body className="antialiased">
-        <SiteNavigation />
         {children}
-        <SiteFooter />
       </body>
     </html>
   );
