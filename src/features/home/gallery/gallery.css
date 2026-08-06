@@ -45,7 +45,7 @@ to preserve the legacy fallback behavior. */
   align-items: center;
   gap: 8px;
   padding: 10px 22px;
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-md);
   background: var(--color-surface);
   border: 1px solid var(--color-surface-border);
   color: var(--color-text-secondary);

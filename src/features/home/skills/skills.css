@@ -107,8 +107,8 @@
   max-width: 700px;
   margin: 0;
   color: var(--color-text-primary);
-  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
-  font-weight: 800;
+  font-size: 26px;
+  font-weight: 600;
   line-height: 1.38;
   letter-spacing: -0.035em;
   text-wrap: balance;
@@ -205,8 +205,10 @@
 }
 
 .skills__category-count {
-  min-width: 29px;
+  min-width: 30px;
   height: 29px;
+  padding-left: 10px;
+  padding-right: 10px;
   display: grid;
   place-items: center;
   border-radius: 9px;

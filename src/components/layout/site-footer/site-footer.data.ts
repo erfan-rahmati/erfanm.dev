@@ -8,13 +8,19 @@ export const siteFooterContent = {
   publicDomain: siteIdentity.publicDomain,
   ownerName: siteIdentity.ownerName,
   description: siteIdentity.footerDescription,
+  text: siteIdentity.footertext,
   navigationTitle: "دسترسی سریع",
   communicationTitle: "راه‌های ارتباطی",
-  copyrightLabel: "تمام حقوق محفوظ است.",
+  communicationdescription: "برای دریافت مشاوره، بررسی پروژه یا شروع همکاری، از یکی از راه‌های ارتباطی زیر با من در تماس باشید",
+  copyrightLabel: "تمامی حقوق این وب‌سایت محفوظ است - ",
   navigation: [
     {
       label: "خانه",
       href: "/",
+    },
+    {
+      label: "پروژه‌ها",
+      href: "#projects",
     },
     {
       label: "درباره من",
@@ -25,7 +31,7 @@ export const siteFooterContent = {
       href: "/#skills",
     },
     {
-      label: "مقالات اخیر",
+      label: "وبلاگ",
       href: "/#blog",
     },
     {

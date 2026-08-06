@@ -52,6 +52,7 @@ export type HeroContent = Readonly<{
   titleAccentLine: string;
   titleLastLine: string;
   description: string;
+  features: readonly string[];
   resumeHref: `/${string}`;
   projectsHref: `/${string}` | `#${string}`;
 }>;

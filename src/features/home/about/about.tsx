@@ -16,11 +16,7 @@ import {
 
 export function About() {
   return (
-    <section
-      id="about"
-      className="about"
-      aria-labelledby="about-title"
-    >
+    <section id="about" className="about" aria-labelledby="about-title">
       <div className="about__background" aria-hidden="true">
         <span className="about__glow about__glow--primary" />
         <span className="about__glow about__glow--secondary" />
@@ -47,9 +43,7 @@ export function About() {
 
         <div className="about__overview">
           <article className="about__story">
-            <p className="about__summary">
-              {aboutContent.summary}
-            </p>
+            <p className="about__summary">{aboutContent.summary}</p>
 
             <div className="about__mindset">
               <span className="about__mindset-icon">
@@ -85,7 +79,7 @@ export function About() {
             <div className="about__profile-heading">
               <div className="about__profile-photo">
                 <Image
-                  src="/images/profile/erfan-rahmati.png"
+                  src="/images/profile/erfanm.devs.png"
                   alt="تصویر عرفان رحمتی"
                   width={640}
                   height={800}
@@ -94,9 +88,7 @@ export function About() {
               </div>
 
               <div className="about__profile-copy">
-                <span className="about__profile-status">
-                  آماده همکاری
-                </span>
+                <span className="about__profile-status">آماده همکاری</span>
 
                 <strong>{aboutContent.name}</strong>
                 <span>فریلنس، پروژه‌ای و دورکاری</span>
@@ -105,10 +97,7 @@ export function About() {
 
             <dl className="about__statistics">
               {aboutStatistics.map((statistic) => (
-                <div
-                  key={statistic.id}
-                  className="about__statistic"
-                >
+                <div key={statistic.id} className="about__statistic">
                   <dd>{statistic.value}</dd>
                   <dt>{statistic.label}</dt>
                 </div>
@@ -136,11 +125,12 @@ export function About() {
           <div className="about__section-heading">
             <div>
               <span>تخصص‌های اصلی</span>
-              <h3>یک مسیر کامل؛ از رابط کاربری تا محصول نهایی</h3>
+              <h3>خدمات توسعه نرم‌افزار و طراحی سایت اختصاصی</h3>
             </div>
 
             <p>
-              شش حوزه‌ای که بیشترین نقش را در پروژه‌های من دارند.
+              حوزه‌هایی که بیشتر پروژه‌های من بر پایه آن‌ها توسعه پیدا
+              می‌کنند
             </p>
           </div>
 

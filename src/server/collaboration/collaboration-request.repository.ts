@@ -1,6 +1,11 @@
 import "server-only";
 
-import { eq } from "drizzle-orm";
+import {
+  and,
+  count,
+  eq,
+  gte,
+} from "drizzle-orm";
 
 import { db } from "@/db";
 import {
@@ -13,6 +18,7 @@ import type {
 
 export type CreateCollaborationRequestInput =
   Readonly<{
+    submissionId: string;
     trackingCode: string;
     fullName: string;
     phone: string;
@@ -26,16 +32,88 @@ export type CreateCollaborationRequestInput =
     userAgent: string | null;
   }>;
 
+const collaborationRequestSelection = {
+  id: collaborationRequests.id,
+  submissionId:
+    collaborationRequests.submissionId,
+  trackingCode:
+    collaborationRequests.trackingCode,
+  fullName:
+    collaborationRequests.fullName,
+  phone: collaborationRequests.phone,
+  projectTypes:
+    collaborationRequests.projectTypes,
+  proposedDuration:
+    collaborationRequests.proposedDuration,
+  proposedBudgetToman:
+    collaborationRequests.proposedBudgetToman,
+  description:
+    collaborationRequests.description,
+  telegramDeliveryStatus:
+    collaborationRequests.telegramDeliveryStatus,
+  createdAt:
+    collaborationRequests.createdAt,
+} as const;
+
+export async function findCollaborationRequestBySubmissionId(
+  submissionId: string,
+) {
+  const [request] = await db
+    .select(
+      collaborationRequestSelection,
+    )
+    .from(collaborationRequests)
+    .where(
+      eq(
+        collaborationRequests.submissionId,
+        submissionId,
+      ),
+    )
+    .limit(1);
+
+  return request ?? null;
+}
+
+export async function countRecentCollaborationRequestsByIpHash(
+  ipHash: string,
+  createdAfter: Date,
+) {
+  const [result] = await db
+    .select({
+      requestCount: count(),
+    })
+    .from(collaborationRequests)
+    .where(
+      and(
+        eq(
+          collaborationRequests.ipHash,
+          ipHash,
+        ),
+        gte(
+          collaborationRequests.createdAt,
+          createdAfter,
+        ),
+      ),
+    );
+
+  return Number(
+    result?.requestCount ?? 0,
+  );
+}
+
 export async function createCollaborationRequestRecord(
   input: CreateCollaborationRequestInput,
 ) {
   const [createdRequest] = await db
     .insert(collaborationRequests)
     .values({
+      submissionId: input.submissionId,
       trackingCode: input.trackingCode,
       fullName: input.fullName,
       phone: input.phone,
-      projectTypes: [...input.projectTypes],
+      projectTypes: [
+        ...input.projectTypes,
+      ],
       proposedDuration:
         input.proposedDuration,
       proposedBudgetToman:
@@ -44,32 +122,15 @@ export async function createCollaborationRequestRecord(
       ipHash: input.ipHash,
       userAgent: input.userAgent,
     })
-    .returning({
-      id: collaborationRequests.id,
-      trackingCode:
-        collaborationRequests.trackingCode,
-      fullName:
-        collaborationRequests.fullName,
-      phone: collaborationRequests.phone,
-      projectTypes:
-        collaborationRequests.projectTypes,
-      proposedDuration:
-        collaborationRequests.proposedDuration,
-      proposedBudgetToman:
-        collaborationRequests.proposedBudgetToman,
-      description:
-        collaborationRequests.description,
-      createdAt:
-        collaborationRequests.createdAt,
-    });
-
-  if (!createdRequest) {
-    throw new Error(
-      "Collaboration request could not be created.",
+    .onConflictDoNothing({
+      target:
+        collaborationRequests.submissionId,
+    })
+    .returning(
+      collaborationRequestSelection,
     );
-  }
 
-  return createdRequest;
+  return createdRequest ?? null;
 }
 
 export async function markTelegramDeliveryAsSent(

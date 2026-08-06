@@ -1,7 +1,8 @@
 :root {
   /* Colors inherited from the legacy visual identity */
   --color-bg: #08090d;
-  --color-header-bg-scrolled: rgba(14, 17, 23, 0.82);
+  --color-header-bg-scrolled: rgba(14, 17, 23, 0.95);
+  --color-header-bg: rgba(14, 17, 23, 0.35);
 
   --color-text-primary: #ffffff;
   --color-text-secondary: rgba(255, 255, 255, 0.72);

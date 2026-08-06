@@ -1,8 +1,5 @@
-/* Legacy site navigation styles
-Automatically extracted from the original erfanm.dev project.
-Layout and responsive values are preserved during migration. */
 :root {
-  --bottom-nav-height: 62px;
+  --bottom-nav-height: 75px;
 }
 body {
   padding-bottom: 0;
@@ -19,10 +16,14 @@ body {
 .header {
   position: fixed;
   inset-inline: 0;
+  margin-block: 10px;
+  margin-left: 15px;
+  margin-right: 15px;
+  border-radius: 35px;
   top: 0;
   z-index: 1000;
   border-bottom: 1px solid #fafafa2c !important;
-  background-color: transparent;
+  background-color: var(--color-header-bg);
   border-bottom: 1px solid transparent;
   transition:
     background-color var(--transition-medium),
@@ -118,7 +119,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 5px;
-  width: 150px;
+  width: 160px;
   height: 50px;
   padding: 0 10px;
   border: 1px solid rgba(56, 107, 255, 0.45);
@@ -602,12 +603,16 @@ body.no-scroll {
 .bottom-nav {
   display: none;
   position: fixed;
+  margin-block: 10px;
+  margin-left: 15px;
+  margin-right: 15px;
+  border-radius: 35px;
   bottom: 0;
   left: 0;
   right: 0;
   z-index: 950;
   height: var(--bottom-nav-height);
-  background: rgba(8, 9, 13, 0.92);
+  background: rgb(8, 9, 13);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   border-top: 1px solid var(--color-surface-border);
@@ -676,9 +681,9 @@ body.no-scroll {
     font-size: 0.88rem;
   }
   .header-btn {
-    padding: 9px 20px;
-    font-size: 0.85rem;
-    width: 130px;
+    padding: 9px 15px;
+    font-size: 0.75rem;
+    width: 140px;
     height: 44px;
   }
 }
@@ -702,7 +707,7 @@ body.no-scroll {
 
 @media (max-width: 450px) {
   :root {
-    --bottom-nav-height: 56px;
+    --bottom-nav-height: 75px;
   }
   body {
     padding-bottom: var(--bottom-nav-height);
@@ -747,7 +752,6 @@ body.no-scroll {
 }
 
 @media (max-width: 380px) {
-
   .bottom-nav__link {
     font-size: 0.45rem;
     min-width: 34px;

@@ -148,7 +148,8 @@ Do not manually change layout values during migration. */
 }
 .hero__title-line {
   display: block;
-  font-size: 50px;
+  font-size: 35px;
+  margin-block: 5px;
 }
 .hero__title-accent {
   background: linear-gradient(
@@ -156,17 +157,71 @@ Do not manually change layout values during migration. */
     var(--color-accent),
     var(--color-accent-secondary)
   );
-  font-size: 60px;
+  font-size: 55px;
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .hero__description {
-  max-width: 460px;
-  font-size: 1.05rem;
+  max-width: 545px;
+  font-size: 16px;
   line-height: 1.9;
   color: var(--color-text-secondary);
+}
+
+.hero__features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 22px;
+  margin-bottom: 28px;
+  padding: 0;
+  list-style: none;
+}
+
+.hero__feature {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 8px 14px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.03);
+
+  backdrop-filter: blur(8px);
+
+  font-size: 0.92rem;
+
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.hero__feature-check {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 18px;
+
+  height: 18px;
+
+  border-radius: 50%;
+
+  background: rgba(77, 107, 255, 0.15);
+
+  color: #4d6bff;
+
+  font-size: 0.75rem;
+
+  font-weight: 700;
+
+  flex-shrink: 0;
 }
 
 .hero__actions {
@@ -563,7 +618,6 @@ Do not manually change layout values during migration. */
 }
 
 @media (max-width: 1024px) {
-
   .hero {
     padding-top: calc(var(--header-height-tablet) + 32px);
     padding-bottom: 48px;
@@ -712,7 +766,6 @@ Do not manually change layout values during migration. */
 }
 
 @media (max-width: 768px) {
-
   .hero {
     min-height: 100svh;
     padding-top: calc(var(--header-height-mobile) + 24px);

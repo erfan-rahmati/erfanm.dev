@@ -6,6 +6,10 @@ import {
   processCollaborationRequest,
   type SubmitCollaborationRequestResult,
 } from "@/server/collaboration/collaboration-request.service";
+import {
+  createRequestIpHash,
+  getRequestIpAddress,
+} from "@/server/security/request-security";
 
 export async function submitCollaborationRequest(
   input: unknown,
@@ -14,14 +18,24 @@ export async function submitCollaborationRequest(
     const requestHeaders =
       await headers();
 
+    const ipAddress =
+      getRequestIpAddress(
+        requestHeaders,
+      );
+
+    const userAgent =
+      requestHeaders
+        .get("user-agent")
+        ?.slice(0, 500) ?? null;
+
     return await processCollaborationRequest(
       input,
       {
-        userAgent:
-          requestHeaders.get(
-            "user-agent",
+        userAgent,
+        ipHash:
+          createRequestIpHash(
+            ipAddress,
           ),
-        ipHash: null,
       },
     );
   }

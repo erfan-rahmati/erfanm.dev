@@ -43,6 +43,7 @@ export type ContactSectionContent = Readonly<{
   communicationDescription: string;
   submitLabel: string;
   submittingLabel: string;
+  trustItems: readonly string[];
 }>;
 
 export type CollaborationRequestFormValues =

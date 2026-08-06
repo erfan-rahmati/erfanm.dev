@@ -98,8 +98,8 @@
 .recent-articles__title {
   margin: 0;
   color: var(--color-text-primary);
-  font-size: clamp(1.75rem, 3.8vw, 2.8rem);
-  font-weight: 800;
+  font-size: 26px;
+  font-weight: 600;
   line-height: 1.45;
   letter-spacing: -0.035em;
   text-wrap: balance;

@@ -50,6 +50,12 @@ const descriptionSchema = z.preprocess(
 export const collaborationRequestSubmissionSchema =
   z
     .object({
+      submissionId: z
+        .string()
+        .trim()
+        .uuid(
+          "شناسه ارسال درخواست معتبر نیست.",
+        ),
       fullName: z
         .string()
         .trim()

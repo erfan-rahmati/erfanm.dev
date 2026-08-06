@@ -6,12 +6,17 @@ import type {
 } from "./hero.types";
 
 export const heroContent = {
-  eyebrow: "توسعه‌دهنده فول‌استک | Full-Stack Developer",
-  titleFirstLine: "ایده‌ی شما را به",
-  titleAccentLine: "وب‌سایت و اپلیکیشنی",
-  titleLastLine: "حرفه‌ای تبدیل می‌کنم",
+  eyebrow: "توسعه‌دهنده Full-Stack | طراحی سایت و وب‌اپلیکیشن اختصاصی",
+  titleFirstLine: "طراحی سایت و توسعه وب‌اپلیکیشن",
+  titleAccentLine: "برای کسب‌وکارهایی",
+  titleLastLine: "که به دنبال رشد هستن",
   description:
-    "وب‌سایت‌ها، پنل‌های مدیریتی و اپلیکیشن‌های تحت وب را با تمرکز بر عملکرد، مقیاس‌پذیری و تجربه کاربری توسعه می‌دهم تا کسب‌وکارها سریع‌تر رشد کنند.",
+    "هر پروژه با شناخت دقیق نیازهای کسب‌وکار شروع می‌شود، نه با انتخاب تکنولوژی - من به کسب‌وکارها کمک می‌کنم با طراحی سایت اختصاصی، توسعه وب‌اپلیکیشن و ساخت پنل‌های مدیریتی، محصولات دیجیتالی سریع، مقیاس‌پذیر و قابل توسعه داشته باشند",
+  features: [
+    "طراحی متناسب با نیاز کسب‌وکار",
+    "توسعه استاندارد و مقیاس‌پذیر",
+    "12 ماه پشتیبانی رایگان",
+  ] as const,
   resumeHref: "/files/resume.pdf",
   projectsHref: "#projects",
 } as const satisfies HeroContent;
@@ -101,7 +106,7 @@ export const heroSocialLinks = [
   {
     id: "github",
     label: "گیت‌هاب عرفان رحمتی",
-    href: "https://github.com/erfanm-dev",
+    href: "https://github.com/erfan-rahmati",
   },
   {
     id: "instagram",
@@ -111,11 +116,11 @@ export const heroSocialLinks = [
   {
     id: "telegram",
     label: "تلگرام عرفان رحمتی",
-    href: "https://t.me/erfanmdev",
+    href: "https://t.me/erfanm_dev",
   },
   {
     id: "linkedin",
     label: "لینکدین عرفان رحمتی",
-    href: "https://linkedin.com/in/erfanm-dev",
+    href: "https://linkedin.com/in/erfanm.dev",
   },
 ] as const satisfies readonly HeroSocialLink[];

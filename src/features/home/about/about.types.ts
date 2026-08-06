@@ -50,12 +50,16 @@ export type AboutExpertise = Readonly<{
 }>;
 
 export type AboutProjectTypeId =
-  | "custom-products"
-  | "dashboards"
+  | "custom-website"
+  | "pwa"
+  | "saas-dashboard"
   | "ecommerce"
-  | "corporate"
-  | "wordpress";
-
+  | "crm-system"
+  | "admin-dashboard"
+  | "enterprise-system"
+  | "corporate-website"
+  | "landing-page";
+  
 export type AboutProjectType = Readonly<{
   id: AboutProjectTypeId;
   label: string;

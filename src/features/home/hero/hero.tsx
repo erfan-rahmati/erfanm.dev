@@ -108,6 +108,22 @@ export function Hero() {
             {heroContent.description}
           </p>
 
+          <ul
+            className="hero__features hero__reveal"
+            style={createRevealStyle(3.5)}
+            aria-label="خدمات اصلی"
+          >
+            {heroContent.features.map((feature) => (
+              <li key={feature} className="hero__feature">
+                <span className="hero__feature-check" aria-hidden="true">
+                  ✓
+                </span>
+
+                <span>{feature}</span>
+              </li>
+            ))}
+          </ul>
+
           <div
             className="hero__actions hero__reveal"
             style={createRevealStyle(4)}
@@ -117,7 +133,7 @@ export function Hero() {
               download="Erfan-Resume.pdf"
               className="hero__btn hero__btn--primary"
             >
-              <span>دریافت رزومه</span>
+              <span>دانلود رزومه</span>
               <DownloadIcon />
             </a>
 
@@ -134,7 +150,7 @@ export function Hero() {
             className="hero__social hero__reveal"
             style={createRevealStyle(5)}
           >
-            <span className="hero__social-label">من را دنبال کنید</span>
+            <span className="hero__social-label">حضور من در</span>
 
             <ul className="hero__social-list">
               {heroSocialLinks.map((socialLink) => (
@@ -230,7 +246,7 @@ export function Hero() {
             </div>
 
             <div className="hero__tech">
-              <span className="hero__tech-label">تکنولوژی‌های استفاده شده</span>
+              <span className="hero__tech-label">توسعه با فناوری‌های مدرن</span>
 
               {heroProjects.map((project, projectIndex) => (
                 <ul

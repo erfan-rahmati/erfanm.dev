@@ -5,15 +5,15 @@ import type {
 
 export const skillsContent = {
   eyebrow: "مهارت‌ها و ابزارها",
-  title: "فناوری‌هایی که با آن‌ها محصول می‌سازم",
+  title: "فناوری‌هایی که پشت محصولات من قرار دارند",
   description:
-    "مهارت‌ها را در چهار گروه فشرده جمع کرده‌ام تا در یک نگاه قابل بررسی باشند؛ جزئیات هر گروه نیز در صورت نیاز باز می‌شود.",
+    "  هر فناوری را بر اساس نقش آن در پروژه‌ها دسته‌بندی کرده‌ام؛ از طراحی رابط کاربری و توسعه Front-End گرفته تا Back-End، API، پایگاه داده و ابزارهای استقرار. این ساختار نشان می‌دهد هر بخش از محصول با چه ابزارهایی توسعه پیدا می‌کند  ",
 } as const satisfies SkillsContent;
 
 export const skillCategories = [
   {
     id: "frontend-platform",
-    title: "Front-End و Web Platform",
+    title: "Front-End و تجربه کاربری",
     description:
       "رابط‌های سریع، واکنش‌گرا و قابل نصب با فناوری‌های مدرن وب.",
     skills: [
@@ -36,7 +36,7 @@ export const skillCategories = [
   },
   {
     id: "backend-data",
-    title: "Back-End، API و داده",
+    title: "Back-End، API و پایگاه داده",
     description:
       "پیاده‌سازی منطق سمت سرور، APIها و ساختار داده قابل نگهداری.",
     skills: [
@@ -59,9 +59,9 @@ export const skillCategories = [
   },
   {
     id: "wordpress-design",
-    title: "WordPress و طراحی محصول",
+    title: "طراحی محصول و WordPress",
     description:
-      "راهکارهای اقتصادی و اختصاصی با تمرکز بر رابط کاربری و نیاز کسب‌وکار.",
+      " راهکارهای سریع و اقتصادی برای کسب‌وکارهایی که به مدیریت آسان محتوا نیاز دارند. ",
     skills: [
       "WooCommerce",
       "Theme Development",
@@ -78,7 +78,7 @@ export const skillCategories = [
   },
   {
     id: "tooling-delivery",
-    title: "ابزارها و انتشار محصول",
+    title: "استقرار، DevOps و ابزارهای توسعه",
     description:
       "ابزارهای روزمره توسعه، کنترل نسخه، بررسی API و استقرار پروژه.",
     skills: [

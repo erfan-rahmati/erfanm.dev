@@ -10,11 +10,11 @@ export const aboutContent = {
   eyebrow: "درباره من",
   name: "عرفان رحمتی",
   role: "Full-Stack Developer | React, Next.js & ASP.NET Core",
-  title: "توسعه فول‌استک با نگاه محصول‌محور",
+  title: " توسعه نرم‌افزار با رویکرد محصول‌محور ",
   summary:
-    "من عرفان رحمتی هستم؛ توسعه‌دهنده فول‌استک با تمرکز بر React، Next.js و ASP.NET Core. محصولات وب سریع، مقیاس‌پذیر و قابل توسعه را از رابط کاربری تا Back-End طراحی و پیاده‌سازی می‌کنم.",
+    " در هر پروژه تلاش می‌کنم قبل از انتخاب ابزار و تکنولوژی، مسئله اصلی کسب‌وکار را درک کنم. به همین دلیل تمرکز من فقط روی توسعه Front-End یا Back-End نیست؛ بلکه ساخت محصولی است که تجربه کاربری مناسب، معماری قابل توسعه و عملکرد قابل اعتماد را در کنار هم ارائه دهد - امروز بیشتر پروژه‌ها را با React، Next.js و ASP.NET Core توسعه می‌دهم؛ اما انتخاب تکنولوژی برای من همیشه نتیجه‌ی نیاز پروژه است، نه نقطه شروع آن ",
   productMindset:
-    "در هر پروژه فقط به تحویل کد فکر نمی‌کنم؛ معماری، تجربه کاربری، نگهداری آینده و هدف کسب‌وکار را کنار هم می‌بینم تا راهکار نهایی در بلندمدت هم ارزشمند بماند.",
+    " برای من موفقیت یک پروژه، فقط تحویل نسخه نهایی نیست. محصول باید بعد از انتشار هم قابل توسعه باشد، نگهداری آسانی داشته باشد و بتواند هم‌زمان با رشد کسب‌وکار رشد کند ",
   primaryAction: {
     label: "شروع همکاری",
     href: "#contact",
@@ -41,8 +41,8 @@ export const aboutStatistics = [
 export const aboutDetails = [
   {
     id: "location",
-    label: "محل فعالیت",
-    value: "بابلسر، مازندران، ایران",
+    label: "مستقر در",
+    value: "بابلسر، مازندران",
   },
   {
     id: "availability",
@@ -54,67 +54,83 @@ export const aboutDetails = [
 export const aboutExpertise = [
   {
     id: "frontend",
-    title: "Front-End مدرن",
-    technologies: ["React", "Next.js"],
+    title: "طراحی سایت اختصاصی",
+    technologies: ["React", "Next.js","TypeScript"],
     description:
-      "توسعه رابط‌های سریع، تعاملی و قابل نگهداری با معماری Component-Based.",
+      " طراحی رابط‌های کاربری سریع، واکنش‌گرا و بهینه که تجربه کار با محصول را ساده و لذت‌بخش می‌کنند ",
   },
   {
     id: "interface-design",
-    title: "رابط کاربری و کیفیت",
-    technologies: ["TypeScript", "Tailwind CSS"],
+    title: "توسعه رابط کاربری استاندارد",
+    technologies: ["TypeScript", "Tailwind CSS","BootStrap"],
     description:
-      "طراحی واکنش‌گرا، مدل‌سازی Type-Safe و تجربه کاربری منسجم در همه نمایشگرها.",
+      " توسعه رابط‌های کاربری با ساختاری استاندارد، کدنویسی Type-Safe و معماری قابل نگهداری برای پروژه‌های بلندمدت ",
   },
   {
     id: "backend",
-    title: "Back-End ساخت‌یافته",
-    technologies: ["ASP.NET Core", "C#"],
+    title: "توسعه Back-End و منطق کسب‌وکار",
+    technologies: ["ASP.NET Core", "C#", "Node.js", "PHP"],
     description:
-      "پیاده‌سازی منطق سمت سرور و سامانه‌های قابل توسعه با معماری روشن و پایدار.",
+      " توسعه هسته نرم‌افزار، پیاده‌سازی منطق کسب‌وکار و طراحی سرویس‌های قابل توسعه با تمرکز بر امنیت، عملکرد و نگهداری آسان ",
   },
   {
     id: "architecture",
     title: "API و سرویس‌ها",
-    technologies: ["Node.js", "REST API"],
+    technologies: ["Postman", "REST API"],
     description:
-      "ساخت سرویس‌ها، احراز هویت و ارتباط مطمئن میان بخش‌های مختلف محصول.",
+      " طراحی و توسعه REST APIهای استاندارد برای ارتباط امن و یکپارچه بین پنل مدیریت، وب‌سایت، اپلیکیشن و سرویس‌های مختلف ",
   },
   {
     id: "pwa",
-    title: "Web Platform",
+    title: "توسعه وب‌اپلیکیشن (PWA)",
     technologies: ["PWA", "Service Worker"],
     description:
-      "ساخت وب‌اپلیکیشن‌های قابل نصب با قابلیت آفلاین و تجربه نزدیک به اپلیکیشن بومی.",
+      " توسعه وب‌اپلیکیشن‌های قابل نصب با تجربه‌ای نزدیک به اپلیکیشن موبایل، عملکرد سریع و امکان استفاده در دستگاه‌های مختلف ",
   },
   {
     id: "wordpress",
-    title: "WordPress Development",
-    technologies: ["PHP", "WooCommerce"],
+    title: "طراحی سایت وردپرس اختصاصی",
+    technologies: ["PHP", "WooCommerce", "Elementor"],
     description:
-      "توسعه قالب، افزونه و فروشگاه‌های اختصاصی متناسب با نیاز واقعی کسب‌وکار.",
+      " طراحی و توسعه وب‌سایت‌های وردپرسی متناسب با نیاز کسب‌وکار، از وب‌سایت شرکتی تا فروشگاه اینترنتی ",
   },
 ] as const satisfies readonly AboutExpertise[];
 
 export const aboutProjectTypes = [
   {
-    id: "custom-products",
-    label: "وب‌اپلیکیشن اختصاصی و SaaS",
+    id: "custom-website",
+    label: " طراحی سایت اختصاصی ",
   },
   {
-    id: "dashboards",
-    label: "داشبورد و پنل مدیریتی",
+    id: "pwa",
+    label: "توسعه وب‌اپلیکیشن (PWA)",
+  },
+  {
+    id: "saas-dashboard",
+    label: "پنل مدیریت SaaS",
   },
   {
     id: "ecommerce",
-    label: "فروشگاه اینترنتی حرفه‌ای",
+    label: " فروشگاه اینترنتی ",
   },
   {
-    id: "corporate",
-    label: "سایت شرکتی و Landing Page",
+    id: "crm-system",
+    label: " سیستم CRM ",
   },
   {
-    id: "wordpress",
-    label: "WordPress، قالب و افزونه اختصاصی",
+    id: "admin-dashboard",
+    label: " داشبورد مدیریتی ",
+  },
+  {
+    id: "enterprise-system",
+    label: " سامانه‌های سازمانی ",
+  },
+  {
+    id: "corporate-website",
+    label: " وب‌سایت شرکتی ",
+  },
+  {
+    id: "landing-page",
+    label: " Landing Page ",
   },
 ] as const satisfies readonly AboutProjectType[];

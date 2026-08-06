@@ -8,7 +8,7 @@ import type {
 
 export const navigationContent = {
   logoLabel: "erfanm.dev — بازگشت به صفحه اصلی",
-  collaborationLabel: "شروع همکاری",
+  collaborationLabel: "درخواست مشاوره",
   resumeLabel: "دریافت رزومه",
   resumeHref: "/files/resume.pdf",
 } as const satisfies NavigationContent;
@@ -21,16 +21,16 @@ export const siteNavigationItems = [
     mobileStagger: 1,
   },
   {
-    id: "about",
-    label: "درباره من",
-    href: "#about",
-    mobileStagger: 3,
-  },
-  {
     id: "projects",
     label: "پروژه‌ها",
     href: "#projects",
     mobileStagger: 2,
+  },
+  {
+    id: "about",
+    label: "درباره من",
+    href: "#about",
+    mobileStagger: 3,
   },
   {
     id: "skills",

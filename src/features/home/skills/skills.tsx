@@ -70,7 +70,7 @@ export function Skills() {
                   </span>
 
                   <span className="skills__category-count">
-                    {category.skills.length}
+                    {category.skills.length + " فناوری "}
                   </span>
 
                   <span className="skills__category-chevron">

@@ -104,6 +104,7 @@ function mapServerFieldErrors(
 
 export function Contact() {
   const formRef = useRef<HTMLFormElement>(null);
+  const submissionIdRef = useRef<string | null>(null);
 
   const [values, setValues] =
     useState<CollaborationRequestFormValues>(initialFormValues);
@@ -137,6 +138,7 @@ export function Contact() {
     setSubmissionState("idle");
     setSubmissionMessage("");
     setTrackingCode(null);
+    submissionIdRef.current = null;
   };
 
   const toggleProjectType = (projectTypeId: CollaborationProjectTypeId) => {
@@ -183,9 +185,14 @@ export function Contact() {
     }
 
     setSubmissionState("submitting");
+    const submissionId =
+      submissionIdRef.current ?? globalThis.crypto.randomUUID();
+
+    submissionIdRef.current = submissionId;
 
     try {
       const result = await submitCollaborationRequest({
+        submissionId,
         ...values,
         projectTypes: [...values.projectTypes],
         website,
@@ -209,19 +216,20 @@ export function Contact() {
 
       setValues(initialFormValues);
       setWebsite("");
+      submissionIdRef.current = null;
       setErrors({});
       setTrackingCode(result.trackingCode);
       setSubmissionState("success");
 
       setSubmissionMessage(
         result.telegramDelivered
-          ? "درخواست همکاری با موفقیت ثبت شد و اعلان آن برای من ارسال شد."
-          : "درخواست همکاری با موفقیت ثبت شد. اعلان تلگرام موقتاً ارسال نشد، اما اطلاعات تو در سیستم محفوظ است.",
+          ? "درخواست شما با موفقیت ثبت شد.\n\nاطلاعات پروژه دریافت شد و پس از بررسی، در کوتاه‌ترین زمان ممکن (معمولاً کمتر از ۲۴ ساعت) از طریق اطلاعات تماس ثبت‌شده با شما ارتباط می‌گیرم تا درباره جزئیات پروژه و مسیر همکاری صحبت کنیم."
+          : "درخواست شما با موفقیت ثبت شد.\n\nاطلاعات پروژه دریافت شد و پس از بررسی، در کوتاه‌ترین زمان ممکن (معمولاً کمتر از ۲۴ ساعت) از طریق اطلاعات تماس ثبت‌شده با شما ارتباط می‌گیرم تا درباره جزئیات پروژه و مسیر همکاری صحبت کنیم.",
       );
     } catch {
       setSubmissionState("error");
       setSubmissionMessage(
-        "ارتباط با سرور برقرار نشد. لطفاً چند دقیقه دیگر دوباره تلاش کن.",
+        "ارتباط با سرور برقرار نشد، لطفاً چند دقیقه دیگر دوباره تلاش کن",
       );
     }
   };
@@ -278,6 +286,32 @@ export function Contact() {
           <p className="contact__description">
             {contactSectionContent.description}
           </p>
+
+          <div className="w-full mt-6 flex flex-wrap items-center gap-3">
+            {contactSectionContent.trustItems.map((item) => (
+              <div
+                key={item}
+                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-zinc-300"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4 text-emerald-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+
+                <span>{item}</span>
+              </div>
+            ))}
+          </div>
         </header>
 
         <div className="contact__layout">
@@ -339,7 +373,7 @@ export function Contact() {
                   aria-describedby={
                     errors.fullName ? "contact-full-name-error" : undefined
                   }
-                  placeholder="مثلاً عرفان رحمتی"
+                  placeholder="نام و نام خانوادگی خود را وارد کنید"
                 />
 
                 {errors.fullName ? (
@@ -383,7 +417,7 @@ export function Contact() {
                   aria-describedby={
                     errors.phone ? "contact-phone-error" : undefined
                   }
-                  placeholder="09354055150"
+                  placeholder="09xxxxxxxxx"
                 />
 
                 {errors.phone ? (
@@ -550,7 +584,7 @@ export function Contact() {
                 </div>
 
                 <span className="contact__field-help">
-                  خالی‌بودن این بخش به معنی توافقی است.
+                  خالی‌بودن این بخش به معنی توافقی است
                 </span>
               </div>
 
@@ -578,7 +612,7 @@ export function Contact() {
 
                     clearFieldError("description");
                   }}
-                  placeholder="درباره هدف پروژه، امکانات موردنیاز یا شرایط فعلی آن توضیح بده."
+                  placeholder=" درباره ایده، امکانات موردنیاز، مخاطبان یا هر نکته‌ای که فکر می‌کنید در شناخت بهتر پروژه کمک می‌کند، بنویسید "
                 />
               </div>
             </div>
@@ -600,7 +634,8 @@ export function Contact() {
               </button>
 
               <p className="contact__privacy-note">
-                اطلاعات فرم فقط برای بررسی درخواست همکاری استفاده خواهد شد.
+                اطلاعات شما فقط برای بررسی پروژه استفاده می‌شود و در اختیار شخص
+                یا مجموعه دیگری قرار نخواهد گرفت{" "}
               </p>
             </div>
 
@@ -619,7 +654,7 @@ export function Contact() {
 
               {trackingCode ? (
                 <span className="contact__tracking-code">
-                  کد پیگیری:
+                  شناسه درخواست :
                   <bdi>{trackingCode}</bdi>
                 </span>
               ) : null}
