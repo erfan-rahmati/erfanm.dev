@@ -16,6 +16,41 @@ const postgresConnectionSchema = z
     },
   );
 
+const base64UrlSecretSchema = z
+  .string()
+  .trim()
+  .min(
+    43,
+    "Secret must contain at least 43 characters.",
+  )
+  .max(
+    256,
+    "Secret is unexpectedly long.",
+  )
+  .regex(
+    /^[A-Za-z0-9_-]+$/,
+    "Secret must be Base64URL-compatible.",
+  );
+
+const betterAuthUrlSchema = z
+  .string()
+  .trim()
+  .url("Better Auth URL must be a valid URL.")
+  .refine(
+    (value) => {
+      const protocol = new URL(value).protocol;
+
+      return (
+        protocol === "http:" ||
+        protocol === "https:"
+      );
+    },
+    {
+      message:
+        "Better Auth URL must use HTTP or HTTPS.",
+    },
+  );
+
 const serverEnvironmentSchema = z.object({
   DATABASE_URL: postgresConnectionSchema,
 
@@ -35,21 +70,14 @@ const serverEnvironmentSchema = z.object({
       "Telegram Chat ID is invalid.",
     ),
 
-  REQUEST_SECURITY_SECRET: z
-    .string()
-    .trim()
-    .min(
-      43,
-      "Request security secret must contain at least 43 characters.",
-    )
-    .max(
-      256,
-      "Request security secret is unexpectedly long.",
-    )
-    .regex(
-      /^[A-Za-z0-9_-]+$/,
-      "Request security secret must be Base64URL-compatible.",
-    ),
+  REQUEST_SECURITY_SECRET:
+    base64UrlSecretSchema,
+
+  BETTER_AUTH_SECRET:
+    base64UrlSecretSchema,
+
+  BETTER_AUTH_URL:
+    betterAuthUrlSchema,
 });
 
 const parsedServerEnvironment =
@@ -65,6 +93,12 @@ const parsedServerEnvironment =
 
     REQUEST_SECURITY_SECRET:
       process.env.REQUEST_SECURITY_SECRET,
+
+    BETTER_AUTH_SECRET:
+      process.env.BETTER_AUTH_SECRET,
+
+    BETTER_AUTH_URL:
+      process.env.BETTER_AUTH_URL,
   });
 
 if (!parsedServerEnvironment.success) {

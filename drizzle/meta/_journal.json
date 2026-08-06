@@ -15,6 +15,13 @@
       "when": 1785859155211,
       "tag": "0001_add_collaboration_submission_id",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1786039924545,
+      "tag": "0002_add_better_auth",
+      "breakpoints": true
     }
   ]
 }
