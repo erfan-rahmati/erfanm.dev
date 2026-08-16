@@ -20,7 +20,7 @@ export const siteFooterContent = {
     },
     {
       label: "پروژه‌ها",
-      href: "#projects",
+      href: "/projects",
     },
     {
       label: "درباره من",
@@ -32,7 +32,7 @@ export const siteFooterContent = {
     },
     {
       label: "وبلاگ",
-      href: "/#blog",
+      href: "/blog",
     },
     {
       label: "تماس و همکاری",

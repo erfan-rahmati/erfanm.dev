@@ -17,7 +17,7 @@ export const heroContent = {
     "توسعه استاندارد و مقیاس‌پذیر",
     "12 ماه پشتیبانی رایگان",
   ] as const,
-  resumeHref: "/files/resume.pdf",
+  resumeHref: "/files/erfan-rahmati-resume.pdf",
   projectsHref: "#projects",
 } as const satisfies HeroContent;
 

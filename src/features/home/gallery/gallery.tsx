@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
 import {
   galleryImageAssets,
@@ -120,13 +121,13 @@ export function Gallery() {
             نمونه‌کارهای من
           </h2>
 
-          <a
-            href="#projects"
+          <Link
+            href="/projects"
             className="gallery__cta"
           >
             <span>مشاهده همه پروژه‌ها</span>
             <GalleryArrowIcon />
-          </a>
+          </Link>
         </header>
 
         <div className="gallery__ticker-wrapper">

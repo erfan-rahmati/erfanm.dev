@@ -1,6 +1,9 @@
 import "server-only";
 
+import { createHmac } from "node:crypto";
 import { z } from "zod";
+
+import { siteConfig } from "@/config/site";
 
 const postgresConnectionSchema = z
   .string()
@@ -74,10 +77,16 @@ const serverEnvironmentSchema = z.object({
     base64UrlSecretSchema,
 
   BETTER_AUTH_SECRET:
-    base64UrlSecretSchema,
+    base64UrlSecretSchema.optional(),
 
   BETTER_AUTH_URL:
-    betterAuthUrlSchema,
+    betterAuthUrlSchema.optional(),
+
+  BLOB_READ_WRITE_TOKEN: z
+    .string()
+    .trim()
+    .min(1)
+    .optional(),
 });
 
 const parsedServerEnvironment =
@@ -99,6 +108,9 @@ const parsedServerEnvironment =
 
     BETTER_AUTH_URL:
       process.env.BETTER_AUTH_URL,
+
+    BLOB_READ_WRITE_TOKEN:
+      process.env.BLOB_READ_WRITE_TOKEN,
   });
 
 if (!parsedServerEnvironment.success) {
@@ -115,5 +127,59 @@ if (!parsedServerEnvironment.success) {
   );
 }
 
-export const serverEnvironment =
+function getBetterAuthUrl(
+  configuredUrl?: string,
+): string {
+  if (configuredUrl) {
+    return configuredUrl;
+  }
+
+  if (process.env.VERCEL_ENV === "production") {
+    return siteConfig.url;
+  }
+
+  const vercelUrl =
+    process.env.VERCEL_URL?.trim();
+
+  if (vercelUrl) {
+    return `https://${vercelUrl}`;
+  }
+
+  if (process.env.NODE_ENV === "development") {
+    return "http://localhost:3000";
+  }
+
+  return siteConfig.url;
+}
+
+function getBetterAuthSecret(
+  configuredSecret: string | undefined,
+  requestSecuritySecret: string,
+): string {
+  if (configuredSecret) {
+    return configuredSecret;
+  }
+
+  // Domain separation keeps the auth signing key independent from the
+  // request-security key while producing a stable secret on every deploy.
+  return createHmac(
+    "sha256",
+    requestSecuritySecret,
+  )
+    .update("erfanm.dev/better-auth/v1")
+    .digest("base64url");
+}
+
+const validatedEnvironment =
   parsedServerEnvironment.data;
+
+export const serverEnvironment = {
+  ...validatedEnvironment,
+  BETTER_AUTH_SECRET: getBetterAuthSecret(
+    validatedEnvironment.BETTER_AUTH_SECRET,
+    validatedEnvironment.REQUEST_SECURITY_SECRET,
+  ),
+  BETTER_AUTH_URL: getBetterAuthUrl(
+    validatedEnvironment.BETTER_AUTH_URL,
+  ),
+} as const;

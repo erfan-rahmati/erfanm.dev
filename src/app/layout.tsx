@@ -17,10 +17,19 @@ export const metadata: Metadata = {
 
   description: siteConfig.description,
   applicationName: siteConfig.name,
+  category: "technology",
+  keywords: [...siteConfig.topics],
+  manifest: "/manifest.webmanifest",
+  icons: {
+    icon: [{ url: "/icon.png", type: "image/png", sizes: "1254x1254" }],
+    shortcut: "/icon.png",
+    apple: [{ url: "/icon.png", type: "image/png" }],
+  },
 
   authors: [
     {
       name: siteConfig.creator,
+      url: `${siteConfig.url}/#about`,
     },
   ],
 
@@ -34,6 +43,33 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     title: siteConfig.title,
     description: siteConfig.description,
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: `${siteConfig.creatorDisplayName} — توسعه‌دهنده فول‌استک`,
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: siteConfig.title,
+    description: siteConfig.description,
+    images: ["/opengraph-image"],
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
 };
 
@@ -48,6 +84,7 @@ export default function RootLayout({
     <html
       lang={siteConfig.language}
       dir="rtl"
+      data-scroll-behavior="smooth"
     >
       <body className="antialiased">
         {children}
