@@ -7,6 +7,7 @@ import {
   useState,
   type MouseEvent,
 } from "react";
+import { usePathname } from "next/navigation";
 
 import type {
   SiteSectionHref,
@@ -21,6 +22,7 @@ const DOWNLOAD_CLOSE_DELAY = 300;
 export function useSiteNavigation(
   sectionIds: readonly SiteSectionId[],
 ) {
+  const pathname = usePathname();
   const [isHeaderScrolled, setIsHeaderScrolled] =
     useState(false);
 
@@ -63,6 +65,17 @@ export function useSiteNavigation(
         scrollPosition >
           HEADER_SCROLL_THRESHOLD,
       );
+
+      if (pathname !== "/") {
+        setActiveSectionId(
+          pathname.startsWith("/blog")
+            ? "blog"
+            : pathname.startsWith("/projects")
+              ? "projects"
+              : "home",
+        );
+        return;
+      }
 
       const highlightedPosition =
         scrollPosition +
@@ -143,7 +156,7 @@ export function useSiteNavigation(
         scheduleScrollUpdate,
       );
     };
-  }, [sectionIds]);
+  }, [pathname, sectionIds]);
 
   useEffect(() => {
     document.body.classList.toggle(
@@ -225,10 +238,19 @@ export function useSiteNavigation(
       href: SiteSectionHref,
       closeAfterNavigation = false,
     ) => {
+      const hashIndex = href.indexOf("#");
+      const hash =
+        hashIndex >= 0
+          ? href.slice(hashIndex)
+          : "";
+      const canScrollOnCurrentPage =
+        pathname === "/";
       const targetElement =
-        document.querySelector<HTMLElement>(
-          href,
-        );
+        canScrollOnCurrentPage && hash
+          ? document.querySelector<HTMLElement>(
+              hash,
+            )
+          : null;
 
       if (targetElement) {
         event.preventDefault();
@@ -245,11 +267,22 @@ export function useSiteNavigation(
         });
       }
 
+      if (
+        canScrollOnCurrentPage &&
+        href === "/"
+      ) {
+        event.preventDefault();
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      }
+
       if (closeAfterNavigation) {
         closeMobileMenu();
       }
     },
-    [closeMobileMenu],
+    [closeMobileMenu, pathname],
   );
 
   const handleResumeDownload =

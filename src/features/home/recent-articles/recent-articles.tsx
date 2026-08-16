@@ -1,22 +1,27 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { recentArticles, recentArticlesContent } from "./recent-articles.data";
+import { recentArticlesContent } from "./recent-articles.data";
 import {
-  RecentArticleCoverArtwork,
   RecentArticlesArrowIcon,
   RecentArticlesArticleIcon,
   RecentArticlesExternalIcon,
 } from "./recent-articles.icons";
+import type { RecentArticle } from "./recent-articles.types";
 
 const articleNumberFormatter = new Intl.NumberFormat("fa-IR", {
   minimumIntegerDigits: 2,
   useGrouping: false,
 });
 
-export function RecentArticles() {
+export function RecentArticles({
+  articles,
+}: Readonly<{
+  articles: readonly RecentArticle[];
+}>) {
   const articlesTrackRef = useRef<HTMLDivElement>(null);
   const animationFrameRef = useRef<number | null>(null);
 
@@ -135,7 +140,11 @@ export function RecentArticles() {
 
   const canShowPreviousArticle = activeArticleIndex > 0;
 
-  const canShowNextArticle = activeArticleIndex < recentArticles.length - 1;
+  const canShowNextArticle = activeArticleIndex < articles.length - 1;
+
+  if (articles.length === 0) {
+    return null;
+  }
 
   return (
     <section
@@ -169,28 +178,14 @@ export function RecentArticles() {
           </div>
 
           <div className="recent-articles__header-actions">
-            {recentArticlesContent.archiveAvailable ? (
-              <Link
-                href={recentArticlesContent.archiveHref}
-                className="recent-articles__archive-link"
-              >
-                <span>{recentArticlesContent.archiveLabel}</span>
+            <Link
+              href={recentArticlesContent.archiveHref}
+              className="recent-articles__archive-link"
+            >
+              <span>{recentArticlesContent.archiveLabel}</span>
 
-                <RecentArticlesExternalIcon />
-              </Link>
-            ) : (
-              <span
-                className="
-                  recent-articles__archive-link
-                  recent-articles__archive-link--disabled
-                "
-                aria-disabled="true"
-              >
-                <span>{recentArticlesContent.archiveLabel}</span>
-
-                <small>به‌زودی</small>
-              </span>
-            )}
+              <RecentArticlesExternalIcon />
+            </Link>
 
             <div
               className="recent-articles__controls"
@@ -230,9 +225,7 @@ export function RecentArticles() {
           onScroll={handleArticlesScroll}
           aria-label="فهرست مقالات اخیر"
         >
-          {recentArticles.map((article, index) => {
-            const isPublished = article.publicationStatus === "published";
-
+          {articles.map((article, index) => {
             return (
               <article
                 key={article.id}
@@ -241,13 +234,24 @@ export function RecentArticles() {
                 data-recent-article-card
               >
                 <div className="recent-articles__cover">
-                  <div
-                    className={`
-                      recent-articles__cover-background
-                      recent-articles__cover-background--${article.cover}
-                    `}
-                    aria-hidden="true"
-                  />
+                  {article.coverImageUrl ? (
+                    <Image
+                      src={article.coverImageUrl}
+                      alt={
+                        article.coverImageAlt ??
+                        article.title
+                      }
+                      fill
+                      sizes="(max-width: 768px) 90vw, 42vw"
+                      className="recent-articles__cover-image"
+                      unoptimized
+                    />
+                  ) : (
+                    <div className="recent-articles__cover-placeholder" aria-hidden="true">
+                      <span>erfanm.dev</span>
+                      <strong>{article.category}</strong>
+                    </div>
+                  )}
 
                   <span className="recent-articles__number">
                     {articleNumberFormatter.format(index + 1)}
@@ -257,9 +261,6 @@ export function RecentArticles() {
                     {article.badge}
                   </span>
 
-                  <div className="recent-articles__artwork">
-                    <RecentArticleCoverArtwork id={article.cover} />
-                  </div>
                 </div>
 
                 <div className="recent-articles__card-body">
@@ -268,46 +269,31 @@ export function RecentArticles() {
 
                     <span aria-hidden="true">•</span>
 
-                    <span
-                      className={
-                        isPublished ? undefined : "recent-articles__status"
-                      }
-                    >
-                      {article.publicationStatusLabel}
+                    <span>
+                      {article.readingMinutes.toLocaleString(
+                        "fa-IR",
+                      )}{" "}
+                      دقیقه مطالعه
                     </span>
                   </div>
 
                   <h3 className="recent-articles__card-title">
-                    {isPublished ? (
-                      <Link href={article.href}>{article.cardTitle}</Link>
-                    ) : (
-                      <span>{article.cardTitle}</span>
-                    )}
+                    <Link href={article.href}>
+                      {article.cardTitle}
+                    </Link>
                   </h3>
 
                   <p className="recent-articles__excerpt">{article.excerpt}</p>
 
                   <footer className="recent-articles__card-footer">
-                    {isPublished ? (
-                      <Link
-                        href={article.href}
-                        className="recent-articles__read-link"
-                        aria-label={`مطالعه مقاله: ${article.title}`}
-                      >
-                        <span>مطالعه مقاله</span>
-                        <RecentArticlesExternalIcon />
-                      </Link>
-                    ) : (
-                      <span
-                        className="
-                          recent-articles__read-link
-                          recent-articles__read-link--disabled
-                        "
-                        aria-disabled="true"
-                      >
-                        در حال آماده‌سازی
-                      </span>
-                    )}
+                    <Link
+                      href={article.href}
+                      className="recent-articles__read-link"
+                      aria-label={`مطالعه مقاله: ${article.title}`}
+                    >
+                      <span>مطالعه مقاله</span>
+                      <RecentArticlesExternalIcon />
+                    </Link>
                   </footer>
                 </div>
               </article>
@@ -316,7 +302,7 @@ export function RecentArticles() {
         </div>
 
         <div className="recent-articles__mobile-progress" aria-hidden="true">
-          {recentArticles.map((article, index) => (
+          {articles.map((article, index) => (
             <span
               key={article.id}
               className={index === activeArticleIndex ? "is-active" : undefined}

@@ -7,6 +7,7 @@
 @import "../features/home/skills/skills.css";
 @import "../features/home/recent-articles/recent-articles.css";
 @import "../features/home/contact/contact.css";
+@import "../features/projects/projects.css";
 @import "../components/layout/site-footer/site-footer.css";
 
 *,
@@ -110,4 +111,76 @@ pre {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
+}
+
+.site-not-found {
+  position: relative;
+  display: grid;
+  min-height: 100vh;
+  padding: 32px;
+  overflow: hidden;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 20%, rgb(120 87 255 / 20%), transparent 38%),
+    var(--color-bg);
+}
+
+.site-not-found__glow {
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  background: rgb(74 144 255 / 12%);
+  filter: blur(90px);
+  pointer-events: none;
+}
+
+.site-not-found section {
+  position: relative;
+  max-width: 680px;
+  padding: clamp(32px, 7vw, 72px);
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: 28px;
+  text-align: center;
+  background: rgb(13 15 30 / 86%);
+  box-shadow: 0 24px 80px rgb(0 0 0 / 32%);
+}
+
+.site-not-found section > span {
+  color: var(--color-accent);
+  font-family: var(--font-code);
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+}
+
+.site-not-found h1 {
+  margin: 18px 0 12px;
+  font-size: clamp(2rem, 6vw, 4rem);
+  line-height: 1.2;
+}
+
+.site-not-found p {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.site-not-found section > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.site-not-found a {
+  padding: 11px 20px;
+  border: 1px solid rgb(255 255 255 / 12%);
+  border-radius: 12px;
+  background: rgb(255 255 255 / 5%);
+}
+
+.site-not-found a:first-child {
+  border-color: transparent;
+  background: var(--color-accent);
+  color: white;
 }

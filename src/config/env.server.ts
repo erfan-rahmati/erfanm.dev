@@ -1,6 +1,9 @@
 import "server-only";
 
+import { createHmac } from "node:crypto";
 import { z } from "zod";
+
+import { siteConfig } from "@/config/site";
 
 const postgresConnectionSchema = z
   .string()
@@ -13,6 +16,41 @@ const postgresConnectionSchema = z
     {
       message:
         "A valid PostgreSQL connection string is required.",
+    },
+  );
+
+const base64UrlSecretSchema = z
+  .string()
+  .trim()
+  .min(
+    43,
+    "Secret must contain at least 43 characters.",
+  )
+  .max(
+    256,
+    "Secret is unexpectedly long.",
+  )
+  .regex(
+    /^[A-Za-z0-9_-]+$/,
+    "Secret must be Base64URL-compatible.",
+  );
+
+const betterAuthUrlSchema = z
+  .string()
+  .trim()
+  .url("Better Auth URL must be a valid URL.")
+  .refine(
+    (value) => {
+      const protocol = new URL(value).protocol;
+
+      return (
+        protocol === "http:" ||
+        protocol === "https:"
+      );
+    },
+    {
+      message:
+        "Better Auth URL must use HTTP or HTTPS.",
     },
   );
 
@@ -35,21 +73,20 @@ const serverEnvironmentSchema = z.object({
       "Telegram Chat ID is invalid.",
     ),
 
-  REQUEST_SECURITY_SECRET: z
+  REQUEST_SECURITY_SECRET:
+    base64UrlSecretSchema,
+
+  BETTER_AUTH_SECRET:
+    base64UrlSecretSchema.optional(),
+
+  BETTER_AUTH_URL:
+    betterAuthUrlSchema.optional(),
+
+  BLOB_READ_WRITE_TOKEN: z
     .string()
     .trim()
-    .min(
-      43,
-      "Request security secret must contain at least 43 characters.",
-    )
-    .max(
-      256,
-      "Request security secret is unexpectedly long.",
-    )
-    .regex(
-      /^[A-Za-z0-9_-]+$/,
-      "Request security secret must be Base64URL-compatible.",
-    ),
+    .min(1)
+    .optional(),
 });
 
 const parsedServerEnvironment =
@@ -65,6 +102,15 @@ const parsedServerEnvironment =
 
     REQUEST_SECURITY_SECRET:
       process.env.REQUEST_SECURITY_SECRET,
+
+    BETTER_AUTH_SECRET:
+      process.env.BETTER_AUTH_SECRET,
+
+    BETTER_AUTH_URL:
+      process.env.BETTER_AUTH_URL,
+
+    BLOB_READ_WRITE_TOKEN:
+      process.env.BLOB_READ_WRITE_TOKEN,
   });
 
 if (!parsedServerEnvironment.success) {
@@ -81,5 +127,59 @@ if (!parsedServerEnvironment.success) {
   );
 }
 
-export const serverEnvironment =
+function getBetterAuthUrl(
+  configuredUrl?: string,
+): string {
+  if (configuredUrl) {
+    return configuredUrl;
+  }
+
+  if (process.env.VERCEL_ENV === "production") {
+    return siteConfig.url;
+  }
+
+  const vercelUrl =
+    process.env.VERCEL_URL?.trim();
+
+  if (vercelUrl) {
+    return `https://${vercelUrl}`;
+  }
+
+  if (process.env.NODE_ENV === "development") {
+    return "http://localhost:3000";
+  }
+
+  return siteConfig.url;
+}
+
+function getBetterAuthSecret(
+  configuredSecret: string | undefined,
+  requestSecuritySecret: string,
+): string {
+  if (configuredSecret) {
+    return configuredSecret;
+  }
+
+  // Domain separation keeps the auth signing key independent from the
+  // request-security key while producing a stable secret on every deploy.
+  return createHmac(
+    "sha256",
+    requestSecuritySecret,
+  )
+    .update("erfanm.dev/better-auth/v1")
+    .digest("base64url");
+}
+
+const validatedEnvironment =
   parsedServerEnvironment.data;
+
+export const serverEnvironment = {
+  ...validatedEnvironment,
+  BETTER_AUTH_SECRET: getBetterAuthSecret(
+    validatedEnvironment.BETTER_AUTH_SECRET,
+    validatedEnvironment.REQUEST_SECURITY_SECRET,
+  ),
+  BETTER_AUTH_URL: getBetterAuthUrl(
+    validatedEnvironment.BETTER_AUTH_URL,
+  ),
+} as const;

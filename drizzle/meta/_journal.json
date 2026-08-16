@@ -15,6 +15,41 @@
       "when": 1785859155211,
       "tag": "0001_add_collaboration_submission_id",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1786039924545,
+      "tag": "0002_add_better_auth",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1786824295431,
+      "tag": "0003_blog_admin",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1786824299841,
+      "tag": "0004_seed_initial_articles",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1786825102196,
+      "tag": "0005_media_article_cascade",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1786831329561,
+      "tag": "0006_projects_portfolio",
+      "breakpoints": true
     }
   ]
 }

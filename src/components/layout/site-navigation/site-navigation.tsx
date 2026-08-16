@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import type {
   CSSProperties,
   MouseEvent,
@@ -136,7 +137,7 @@ export function SiteNavigation() {
   ) {
     handleSectionLinkClick(
       event,
-      "#contact",
+      "/#contact",
       closeAfterNavigation,
     );
   }
@@ -146,7 +147,7 @@ export function SiteNavigation() {
   ) {
     handleSectionLinkClick(
       event,
-      "#home",
+      "/",
     );
   }
 
@@ -168,8 +169,8 @@ export function SiteNavigation() {
         id="siteHeader"
       >
         <div className="header__container">
-          <a
-            href="#contact"
+          <Link
+            href="/#contact"
             className="header-btn"
             onClick={(event) => {
               handleCollaborationClick(event);
@@ -183,7 +184,7 @@ export function SiteNavigation() {
                   .collaborationLabel
               }
             </span>
-          </a>
+          </Link>
 
           <nav
             className="header__nav"
@@ -196,8 +197,8 @@ export function SiteNavigation() {
             </ul>
           </nav>
 
-          <a
-            href="#home"
+          <Link
+            href="/"
             className="header__logo"
             aria-label={
               navigationContent.logoLabel
@@ -208,7 +209,7 @@ export function SiteNavigation() {
             <span className="header__logo-accent">
               .dev
             </span>
-          </a>
+          </Link>
 
           <button
             ref={toggleButtonRef}
@@ -324,8 +325,8 @@ export function SiteNavigation() {
         </ul>
 
         <div className="mobile-nav__actions">
-          <a
-            href="#contact"
+          <Link
+            href="/#contact"
             className="mobile-nav__btn mobile-nav__btn--primary"
             tabIndex={
               isMobileMenuOpen ? 0 : -1
@@ -351,7 +352,7 @@ export function SiteNavigation() {
             >
               <NavigationArrowIcon />
             </span>
-          </a>
+          </Link>
 
           <a
             href={

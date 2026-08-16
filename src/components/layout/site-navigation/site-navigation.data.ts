@@ -10,44 +10,44 @@ export const navigationContent = {
   logoLabel: "erfanm.dev — بازگشت به صفحه اصلی",
   collaborationLabel: "درخواست مشاوره",
   resumeLabel: "دریافت رزومه",
-  resumeHref: "/files/resume.pdf",
+  resumeHref: "/files/erfan-rahmati-resume.pdf",
 } as const satisfies NavigationContent;
 
 export const siteNavigationItems = [
   {
     id: "home",
     label: "خانه",
-    href: "#home",
+    href: "/",
     mobileStagger: 1,
   },
   {
     id: "projects",
     label: "پروژه‌ها",
-    href: "#projects",
+    href: "/projects",
     mobileStagger: 2,
   },
   {
     id: "about",
     label: "درباره من",
-    href: "#about",
+    href: "/#about",
     mobileStagger: 3,
   },
   {
     id: "skills",
     label: "مهارت‌ها",
-    href: "#skills",
+    href: "/#skills",
     mobileStagger: 2,
   },
   {
     id: "blog",
     label: "وبلاگ",
-    href: "#blog",
+    href: "/blog",
     mobileStagger: 2,
   },
   {
     id: "contact",
     label: "تماس",
-    href: "#contact",
+    href: "/#contact",
     mobileStagger: 4,
   },
 ] as const satisfies readonly SiteNavigationItem[];
@@ -61,31 +61,31 @@ export const bottomNavigationItems = [
   {
     id: "home",
     label: "خانه",
-    href: "#home",
+    href: "/",
     icon: "home",
   },
   {
     id: "projects",
     label: "پروژه‌ها",
-    href: "#projects",
+    href: "/projects",
     icon: "projects",
   },
   {
     id: "about",
     label: "درباره",
-    href: "#about",
+    href: "/#about",
     icon: "about",
   },
   {
     id: "blog",
     label: "بلاگ",
-    href: "#blog",
+    href: "/blog",
     icon: "blog",
   },
   {
     id: "contact",
     label: "تماس",
-    href: "#contact",
+    href: "/#contact",
     icon: "contact",
   },
 ] as const satisfies readonly BottomNavigationItem[];
@@ -104,7 +104,7 @@ export const navigationSocialLinks = [
   {
     id: "telegram",
     label: "تلگرام عرفان رحمتی",
-    href: "https://t.me/erfanmdev",
+    href: "https://t.me/erfanm_dev",
   },
   {
     id: "linkedin",

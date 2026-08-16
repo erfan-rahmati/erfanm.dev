@@ -11,7 +11,10 @@ export type SiteSectionId =
   (typeof SITE_SECTION_IDS)[number];
 
 export type SiteSectionHref =
-  `#${SiteSectionId}`;
+  | "/"
+  | "/blog"
+  | "/projects"
+  | `/#${SiteSectionId}`;
 
 export const BOTTOM_NAVIGATION_ICON_IDS = [
   "home",

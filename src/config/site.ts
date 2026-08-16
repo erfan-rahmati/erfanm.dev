@@ -7,6 +7,27 @@ export const siteConfig = {
   language: "fa",
   locale: "fa_IR",
   creator: "Erfan Rahmati",
+  creatorDisplayName: "عرفان رحمتی",
+  creatorJobTitle: "توسعه‌دهنده فول‌استک و طراح وب",
+  location: "بابلسر، مازندران، ایران",
+  socialProfiles: [
+    "https://github.com/erfanm-dev",
+    "https://instagram.com/erfanm.dev",
+    "https://t.me/erfanm_dev",
+    "https://linkedin.com/in/erfanm-dev",
+  ],
+  topics: [
+    "طراحی سایت اختصاصی",
+    "توسعه وب‌اپلیکیشن",
+    "Next.js",
+    "React",
+    "TypeScript",
+    "طراحی پنل مدیریت",
+    "توسعه API",
+    "PWA",
+    "سئو فنی",
+    "بهینه‌سازی سرعت وب",
+  ],
 } as const;
 
 export type SiteConfig = typeof siteConfig;

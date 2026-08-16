@@ -1,21 +1,9 @@
-export const ARTICLE_PUBLICATION_STATUS_IDS = [
-  "coming-soon",
-  "published",
-] as const;
-
-export type ArticlePublicationStatus =
-  (typeof ARTICLE_PUBLICATION_STATUS_IDS)[number];
-
-export type RecentArticleId =
-  | "web-design-rules-2026"
-  | "ecommerce-website-guide";
+export type BlogArticleHref =
+  `/blog/${string}`;
 
 export type RecentArticleCoverId =
   | "web-development-seo"
   | "ecommerce-design";
-
-export type BlogArticleHref =
-  `/blog/${string}`;
 
 export type RecentArticlesContent = Readonly<{
   eyebrow: string;
@@ -27,7 +15,7 @@ export type RecentArticlesContent = Readonly<{
 }>;
 
 export type RecentArticle = Readonly<{
-  id: RecentArticleId;
+  id: string;
   slug: string;
   href: BlogArticleHref;
   title: string;
@@ -35,7 +23,8 @@ export type RecentArticle = Readonly<{
   excerpt: string;
   category: string;
   badge: string;
-  cover: RecentArticleCoverId;
-  publicationStatus: ArticlePublicationStatus;
-  publicationStatusLabel: string;
+  coverImageUrl: string | null;
+  coverImageAlt: string | null;
+  readingMinutes: number;
+  publishedAt: string | null;
 }>;
