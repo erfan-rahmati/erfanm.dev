@@ -1,22 +1,38 @@
 export const siteConfig = {
   name: "erfanm.dev",
-  title: "عرفان رحمتی | توسعه‌دهنده فول‌استک",
+
+  title:
+    "عرفان رحمتی | برنامه نویس و طراح سایت در مازندران",
+
   description:
-    "وب‌سایت شخصی عرفان رحمتی؛ معرفی پروژه‌ها، تجربه‌های کاری و نوشته‌های فنی در حوزه توسعه وب.",
+    "عرفان رحمتی، توسعه‌دهنده فول‌استک و طراح سایت در مازندران؛ ارائه خدمات طراحی سایت اختصاصی، توسعه وب‌اپلیکیشن، پنل مدیریت و راهکارهای نرم‌افزاری مدرن",
+
   url: "https://erfanmdev.ir",
+
   language: "fa",
   locale: "fa_IR",
+
   creator: "Erfan Rahmati",
   creatorDisplayName: "عرفان رحمتی",
-  creatorJobTitle: "توسعه‌دهنده فول‌استک و طراح وب",
-  location: "بابلسر، مازندران، ایران",
+
+  creatorJobTitle:
+    "برنامه نویس، توسعه‌دهنده فول‌استک و طراح سایت",
+
+  location:
+    "بابلسر، مازندران، ایران",
+
   socialProfiles: [
-    "https://github.com/erfanm-dev",
+    "https://github.com/erfan-rahmati",
     "https://instagram.com/erfanm.dev",
     "https://t.me/erfanm_dev",
     "https://linkedin.com/in/erfanm-dev",
   ],
+
   topics: [
+    "عرفان رحمتی",
+    "طراحی سایت در بابلسر",
+    "طراحی سایت در مازندران",
+    "برنامه نویس مازندران",
     "طراحی سایت اختصاصی",
     "توسعه وب‌اپلیکیشن",
     "Next.js",
@@ -30,16 +46,27 @@ export const siteConfig = {
   ],
 } as const;
 
+
 export type SiteConfig = typeof siteConfig;
+
 
 export const siteIdentity = {
   brand: "erfanm.dev",
-  publicDomain: "erfanmdev.ir",
-  ownerName: "عرفان رحمتی",
+
+  publicDomain:
+    "erfanmdev.ir",
+
+  ownerName:
+    "عرفان رحمتی",
+
   footerDescription:
-    " طراحی سایت اختصاصی، توسعه وب‌اپلیکیشن و ساخت نرم‌افزارهای تحت وب برای کسب‌وکارهایی که به دنبال رشد، مقیاس‌پذیری و تجربه کاربری بهتر هستند ",
-  footertext :" erfanm.dev مرجع معرفی خدمات طراحی سایت اختصاصی، توسعه وب‌اپلیکیشن، طراحی پنل‌های مدیریتی، توسعه API، ساخت PWA و انتشار مقالات تخصصی در حوزه توسعه نرم‌افزار و محصولات دیجیتال است ",
-  } as const;
+    "عرفان رحمتی، برنامه نویس و طراح سایت در بابلسر و مازندران؛ متخصص طراحی سایت اختصاصی، توسعه وب‌اپلیکیشن، پنل‌های مدیریتی و محصولات دیجیتال.",
+
+  footertext:
+    "erfanm.dev وب‌سایت رسمی عرفان رحمتی برای معرفی خدمات طراحی سایت، توسعه وب، توسعه API، ساخت نرم‌افزارهای تحت وب و انتشار مقالات تخصصی حوزه فناوری است.",
+
+} as const;
+
 
 export const siteContact = {
   phone: {
@@ -49,12 +76,14 @@ export const siteContact = {
     internationalValue: "+989354055150",
     href: "tel:+989354055150",
   },
+
   whatsapp: {
     label: "WhatsApp",
     displayValue: "۰۹۳۵۴۰۵۵۱۵۰",
     rawValue: "989354055150",
     href: "https://wa.me/989354055150",
   },
+
   telegram: {
     label: "Telegram",
     displayValue: "@erfanm_dev",
